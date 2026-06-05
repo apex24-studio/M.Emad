@@ -35,10 +35,88 @@ body {
     cursor: none; /* Hide default for custom cursor */
 }
 
+/* Show default cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-blur { display: none !important; }
+}
+
 .container {
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 40px;
+}
+
+/* --- Hamburger Menu Toggle --- */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 1100;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+}
+
+.menu-toggle.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+/* Mobile Nav Overlay */
+.mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 0, 20, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.mobile-nav-overlay.open {
+    opacity: 1;
+}
+
+.mobile-nav-overlay a {
+    text-decoration: none;
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+    font-family: var(--font-head);
+}
+
+.mobile-nav-overlay a:hover,
+.mobile-nav-overlay a.contact-pill {
+    color: var(--primary);
+}
+
+.mobile-nav-overlay .contact-pill {
+    background: var(--primary);
+    color: var(--bg-deep) !important;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-size: 1.4rem;
 }
 
 /* --- Preloader --- */
@@ -725,9 +803,126 @@ header {
     .hero-visual { max-width: 600px; margin: 0 auto; }
 }
 
+/* ========================================
+   TABLET (max 900px)
+======================================== */
+@media (max-width: 900px) {
+    .hero-title { font-size: 3.2rem; }
+    .title-bg { font-size: 7rem; }
+    .contact-card { flex-direction: column; text-align: center; padding: 50px 40px; gap: 40px; }
+    .contact-text h2 { font-size: 2.2rem; }
+    .social-pills { justify-content: center; }
+}
+
+/* ========================================
+   MOBILE (max 768px)
+======================================== */
 @media (max-width: 768px) {
+    /* Layout */
+    .container { padding: 0 20px; }
+
+    /* Navigation */
     .nav-links { display: none; }
+    .menu-toggle { display: flex; }
+    header { top: 12px; padding: 0 16px; }
+    .glass-nav { padding: 10px 20px; }
+
+    /* Hero */
+    .hero-section {
+        height: auto;
+        min-height: 100svh;
+        padding-top: 90px;
+        padding-bottom: 60px;
+    }
+    .hero-layout {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+    .hero-title { font-size: 3rem; line-height: 1.05; }
+    .hero-subtitle {
+        font-size: 1rem;
+        margin: 0 auto 40px;
+        max-width: 100%;
+    }
+    .hero-actions { flex-direction: column; align-items: center; gap: 20px; }
+    .main-cta { width: 100%; justify-content: center; padding: 16px 30px; }
+    .scroll-hint { display: none; }
+
+    /* Hero Visual */
+    .hero-visual { padding: 20px; max-width: 300px; margin: 0 auto; }
+    .main-frame { max-width: 280px; }
+    .experience-card { top: -10px; left: -10px; padding: 15px; }
+    .experience-card .number { font-size: 1.8rem; }
+    .tool-icon { width: 46px; height: 46px; font-size: 1.1rem; }
+    .tool-2 { right: -8px; }
+    .tool-4 { left: -8px; }
+
+    /* Stats Strip */
+    .ticker span { font-size: 1rem; gap: 25px; }
+    .ticker { gap: 30px; }
+
+    /* Services */
+    .services-section { padding: 80px 0; }
+    .services-grid { grid-template-columns: 1fr; }
+
+    /* Work Section */
+    .work-section { padding: 80px 0; }
     .work-grid { grid-template-columns: 1fr; }
-    .work-card.large { grid-column: span 1; height: 400px; }
-    .contact-card { flex-direction: column; text-align: center; padding: 40px; gap: 40px; }
+    .work-card { height: 280px; }
+    .work-card.large { grid-column: span 1; height: 320px; }
+    .card-overlay { padding: 20px; opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); }
+    .card-meta .project-title { font-size: 1.3rem; }
+    .view-btn { width: 46px; height: 46px; font-size: 1rem; }
+
+    /* Filter menu */
+    .filter-menu { gap: 10px; }
+    .filter-btn { padding: 8px 18px; font-size: 0.85rem; }
+
+    /* Section Titles */
+    .title-bg { font-size: 5rem; }
+    .title-top { font-size: 2rem; }
+    .section-title-area { margin-bottom: 50px; }
+
+    /* Contact */
+    .contact-section { padding-bottom: 60px; }
+    .contact-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 24px;
+        gap: 30px;
+        border-radius: 28px;
+    }
+    .contact-text h2 { font-size: 1.8rem; max-width: 100%; }
+    .social-pills { justify-content: center; }
+    .liquid-btn { padding: 18px 40px; font-size: 1rem; width: 100%; text-align: center; }
+    .contact-btn-area { width: 100%; }
+    .c-link { font-size: 0.85rem; word-break: break-all; }
+
+    /* Footer */
+    .main-footer { padding: 30px 0; }
+    .footer-content { flex-direction: column; gap: 15px; text-align: center; }
+
+    /* Lightbox */
+    .lightbox-content { width: 95%; }
+    .lightbox-content iframe { height: 220px; }
+
+    /* More works btn */
+    .outline-btn { width: 100%; text-align: center; }
+}
+
+/* ========================================
+   SMALL MOBILE (max 480px)
+======================================== */
+@media (max-width: 480px) {
+    .hero-title { font-size: 2.4rem; }
+    .hero-badge { font-size: 0.72rem; }
+    .title-bg { font-size: 3.5rem; }
+    .title-top { font-size: 1.6rem; }
+    .logo { font-size: 1rem; }
+    .contact-text h2 { font-size: 1.5rem; }
+    .work-card { height: 240px; }
+    .work-card.large { height: 280px; }
+    .orb-1 { width: 180px; height: 180px; }
+    .orb-2 { width: 220px; height: 220px; }
 }

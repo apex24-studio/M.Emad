@@ -21,7 +21,39 @@ window.addEventListener('load', () => {
     }, 100);
 });
 
-// --- Advanced Magnetic Cursor ---
+// --- Hamburger / Mobile Menu ---
+const menuToggle = document.querySelector('.menu-toggle');
+const mobileNav = document.getElementById('mobile-nav');
+const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+if (menuToggle && mobileNav) {
+    menuToggle.addEventListener('click', () => {
+        const isOpen = mobileNav.classList.contains('open');
+        if (isOpen) {
+            mobileNav.classList.remove('open');
+            menuToggle.classList.remove('open');
+            setTimeout(() => { mobileNav.style.display = 'none'; }, 400);
+            document.body.style.overflow = '';
+        } else {
+            mobileNav.style.display = 'flex';
+            requestAnimationFrame(() => mobileNav.classList.add('open'));
+            menuToggle.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+    });
+
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.remove('open');
+            menuToggle.classList.remove('open');
+            setTimeout(() => { mobileNav.style.display = 'none'; }, 400);
+            document.body.style.overflow = '';
+        });
+    });
+}
+
+// --- Advanced Magnetic Cursor (desktop only) ---
+const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 const cursor = document.getElementById('cursor');
 const cursorBlur = document.getElementById('cursor-blur');
 
@@ -30,66 +62,72 @@ let mouseY = 0;
 let cursorX = 0;
 let cursorY = 0;
 
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    // Immediate cursor
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
-});
-
-// Smooth blur follower
-function animateCursor() {
-    let dx = mouseX - cursorX;
-    let dy = mouseY - cursorY;
-    
-    cursorX += dx * 0.1;
-    cursorY += dy * 0.1;
-    
-    cursorBlur.style.left = cursorX + 'px';
-    cursorBlur.style.top = cursorY + 'px';
-    
-    requestAnimationFrame(animateCursor);
-}
-animateCursor();
-
-// --- Magnetic Elements ---
-const magneticElements = document.querySelectorAll('.magnetic');
-magneticElements.forEach(el => {
-    el.addEventListener('mousemove', (e) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
+if (!isTouchDevice && cursor && cursorBlur) {
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
         
-        el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-        cursor.style.transform = 'translate(-50%, -50%) scale(4)';
+        // Immediate cursor
+        cursor.style.left = mouseX + 'px';
+        cursor.style.top = mouseY + 'px';
     });
-    
-    el.addEventListener('mouseleave', () => {
-        el.style.transform = `translate(0px, 0px)`;
-        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
-});
 
-// --- Interaction Hover Effects ---
-const hoverables = document.querySelectorAll('a, button, .work-card, .nav-item');
-hoverables.forEach(item => {
-    item.addEventListener('mouseenter', () => {
-        cursor.style.width = '40px';
-        cursor.style.height = '40px';
-        cursor.style.background = 'rgba(255,255,255,0.1)';
-        cursor.style.backdropFilter = 'blur(2px)';
-        cursor.style.border = '1px solid white';
+    // Smooth blur follower
+    function animateCursor() {
+        let dx = mouseX - cursorX;
+        let dy = mouseY - cursorY;
+        
+        cursorX += dx * 0.1;
+        cursorY += dy * 0.1;
+        
+        cursorBlur.style.left = cursorX + 'px';
+        cursorBlur.style.top = cursorY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+}
+
+// --- Magnetic Elements (desktop only) ---
+if (!isTouchDevice) {
+    const magneticElements = document.querySelectorAll('.magnetic');
+    magneticElements.forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            if (cursor) cursor.style.transform = 'translate(-50%, -50%) scale(4)';
+        });
+        
+        el.addEventListener('mouseleave', () => {
+            el.style.transform = `translate(0px, 0px)`;
+            if (cursor) cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
     });
-    item.addEventListener('mouseleave', () => {
-        cursor.style.width = '10px';
-        cursor.style.height = '10px';
-        cursor.style.background = 'white';
-        cursor.style.backdropFilter = 'none';
-        cursor.style.border = 'none';
+
+    // --- Interaction Hover Effects ---
+    const hoverables = document.querySelectorAll('a, button, .work-card, .nav-item');
+    hoverables.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            if (!cursor) return;
+            cursor.style.width = '40px';
+            cursor.style.height = '40px';
+            cursor.style.background = 'rgba(255,255,255,0.1)';
+            cursor.style.backdropFilter = 'blur(2px)';
+            cursor.style.border = '1px solid white';
+        });
+        item.addEventListener('mouseleave', () => {
+            if (!cursor) return;
+            cursor.style.width = '10px';
+            cursor.style.height = '10px';
+            cursor.style.background = 'white';
+            cursor.style.backdropFilter = 'none';
+            cursor.style.border = 'none';
+        });
     });
-});
+}
 
 // --- Scroll Text Reveal Animation ---
 const observerOptions = {
@@ -253,23 +291,25 @@ async function fetchPortfolioVideos() {
                 });
             });
             
-            // Re-bind Hover Effects for new cards
-            newCards.forEach(item => {
-                item.addEventListener('mouseenter', () => {
-                    cursor.style.width = '40px';
-                    cursor.style.height = '40px';
-                    cursor.style.background = 'rgba(255,255,255,0.1)';
-                    cursor.style.backdropFilter = 'blur(2px)';
-                    cursor.style.border = '1px solid white';
+            // Re-bind Hover Effects for new cards (desktop only)
+            if (!isTouchDevice && cursor) {
+                newCards.forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        cursor.style.width = '40px';
+                        cursor.style.height = '40px';
+                        cursor.style.background = 'rgba(255,255,255,0.1)';
+                        cursor.style.backdropFilter = 'blur(2px)';
+                        cursor.style.border = '1px solid white';
+                    });
+                    item.addEventListener('mouseleave', () => {
+                        cursor.style.width = '10px';
+                        cursor.style.height = '10px';
+                        cursor.style.background = 'white';
+                        cursor.style.backdropFilter = 'none';
+                        cursor.style.border = 'none';
+                    });
                 });
-                item.addEventListener('mouseleave', () => {
-                    cursor.style.width = '10px';
-                    cursor.style.height = '10px';
-                    cursor.style.background = 'white';
-                    cursor.style.backdropFilter = 'none';
-                    cursor.style.border = 'none';
-                });
-            });
+            }
         }
     } catch(e) {
         console.log("استخدام الفيديوهات الثابتة لعدم وجود إعدادات Firebase بعد.");
