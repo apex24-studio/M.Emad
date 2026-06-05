@@ -4,88 +4,402 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم | M.EMAD</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Readex+Pro:wght@200;400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
-        body { background: var(--bg); color: var(--text); padding: 2rem; min-height: 100vh; }
-        .dashboard-container { max-width: 800px; margin: 0 auto; background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-        .form-group input, .form-group select { width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: white; font-family: inherit; }
-        .submit-btn { width: 100%; padding: 1rem; border: none; border-radius: 8px; background: var(--primary); color: white; font-size: 1.1rem; cursor: pointer; transition: 0.3s; font-family: inherit; }
-        .submit-btn:hover { background: var(--accent); }
-        
-        .videos-list { margin-top: 3rem; }
-        .video-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05); }
-        .video-info { display: flex; align-items: center; gap: 1rem; }
-        .video-info img { width: 120px; border-radius: 6px; }
-        .delete-btn { background: #ff4757; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
-        
-        #login-section { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; }
-        #login-form { width: 100%; max-width: 400px; background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .logout-btn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+        :root {
+            --bg: #0a0a0f;
+            --card: rgba(255,255,255,0.04);
+            --border: rgba(255,255,255,0.1);
+            --primary: #7c5cbf;
+            --accent: #e040fb;
+            --text: #e0e0e0;
+            --muted: #888;
+            --danger: #ff4757;
+            --success: #2ed573;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Readex Pro', sans-serif;
+            min-height: 100vh;
+            background-image: radial-gradient(ellipse at 20% 20%, rgba(124,92,191,0.15) 0%, transparent 50%),
+                              radial-gradient(ellipse at 80% 80%, rgba(224,64,251,0.1) 0%, transparent 50%);
+        }
+
+        /* ===== Login Section ===== */
+        #login-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .login-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c5cbf, #e040fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+        #login-form {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card);
+            padding: 2.5rem;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+        }
+        #login-form h2 { font-size: 1.4rem; margin-bottom: 2rem; text-align: center; }
+
+        /* ===== Form Elements ===== */
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.4);
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus { border-color: var(--primary); }
+        .form-group select option { background: #1a1a2e; }
+
+        /* ===== Image Upload Area ===== */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            background: rgba(0,0,0,0.2);
+        }
+        .upload-area:hover { border-color: var(--primary); background: rgba(124,92,191,0.05); }
+        .upload-area.has-image { border-color: var(--success); border-style: solid; }
+        .upload-area input[type="file"] {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+        }
+        .upload-area .upload-icon { font-size: 2rem; color: var(--muted); margin-bottom: 0.5rem; }
+        .upload-area .upload-text { font-size: 0.85rem; color: var(--muted); }
+        .upload-preview {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: none;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== Platform Detect Badge ===== */
+        .platform-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .platform-badge.show { opacity: 1; }
+        .platform-badge.youtube { background: rgba(255,0,0,0.15); color: #ff4444; border: 1px solid rgba(255,0,0,0.3); }
+        .platform-badge.facebook { background: rgba(24,119,242,0.15); color: #4267B2; border: 1px solid rgba(24,119,242,0.3); }
+        .platform-badge.instagram { background: rgba(225,48,108,0.15); color: #e1306c; border: 1px solid rgba(225,48,108,0.3); }
+        .platform-badge.tiktok { background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .platform-badge.other { background: rgba(124,92,191,0.15); color: var(--primary); border: 1px solid rgba(124,92,191,0.3); }
+
+        /* ===== Buttons ===== */
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* ===== Dashboard Layout ===== */
+        #dashboard-section { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .dashboard-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c5cbf, #e040fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-actions { display: flex; gap: 0.8rem; }
+        .btn-outline {
+            padding: 0.5rem 1.2rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-danger-outline {
+            padding: 0.5rem 1.2rem;
+            border: 1px solid rgba(255,71,87,0.3);
+            background: transparent;
+            color: var(--danger);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .btn-danger-outline:hover { background: rgba(255,71,87,0.1); }
+
+        /* ===== Add Video Card ===== */
+        .add-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .add-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .add-card h3 i { color: var(--accent); }
+
+        /* ===== Upload Progress ===== */
+        .upload-progress-wrap { display: none; margin-top: 1rem; }
+        .upload-progress-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .upload-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .upload-status { font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem; }
+
+        /* ===== Videos List ===== */
+        .videos-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .videos-section h3 i { color: var(--primary); }
+        .video-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 1rem 1.2rem;
+            border-radius: 14px;
+            margin-bottom: 0.8rem;
+            transition: border-color 0.3s;
+        }
+        .video-item:hover { border-color: rgba(255,255,255,0.2); }
+        .video-info { display: flex; align-items: center; gap: 1rem; flex: 1; }
+        .video-thumb {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .video-meta h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+        .video-meta .meta-row { display: flex; align-items: center; gap: 0.6rem; }
+        .cat-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(124,92,191,0.2);
+            color: var(--primary);
+            border-radius: 20px;
+        }
+        .plat-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .video-link { font-size: 0.75rem; color: var(--muted); word-break: break-all; }
+        .delete-btn {
+            background: rgba(255,71,87,0.1);
+            border: 1px solid rgba(255,71,87,0.3);
+            color: var(--danger);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            margin-right: 0.5rem;
+        }
+        .delete-btn:hover { background: rgba(255,71,87,0.2); }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+        }
+        .empty-state i { font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.3; }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1a2e;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--success); color: var(--success); }
+        .toast.error { border-color: var(--danger); color: var(--danger); }
+
+        #login-error { color: var(--danger); font-size: 0.85rem; margin-top: 1rem; display: none; text-align: center; }
     </style>
 </head>
 <body>
 
+    <!-- ===== Login ===== -->
     <div id="login-section">
-        <h2 style="margin-bottom: 2rem;">تسجيل الدخول للوحة التحكم</h2>
+        <div class="login-logo">M.EMAD</div>
         <form id="login-form">
+            <h2>🔐 لوحة التحكم</h2>
             <div class="form-group">
                 <label>البريد الإلكتروني</label>
-                <input type="email" id="email" required>
+                <input type="email" id="email" placeholder="example@gmail.com" required autocapitalize="none" autocorrect="off" autocomplete="email" spellcheck="false" oninput="this.value=this.value.toLowerCase()">
             </div>
             <div class="form-group">
                 <label>كلمة المرور</label>
-                <input type="password" id="password" required>
+                <input type="password" id="password" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="submit-btn">تسجيل الدخول</button>
-            <p id="login-error" style="color: #ff4757; margin-top: 1rem; display: none;"></p>
+            <button type="submit" class="btn btn-primary">تسجيل الدخول</button>
+            <p id="login-error">البريد الإلكتروني أو كلمة المرور غير صحيحة</p>
         </form>
     </div>
 
-    <div id="dashboard-section" class="dashboard-container" style="display: none;">
-        <div class="header-top">
-            <h2>إضافة فيديو جديد</h2>
-            <div>
-                <a href="index.html" class="logout-btn" style="text-decoration: none; margin-left: 10px;">العودة للموقع</a>
-                <button id="logout-btn" class="logout-btn">تسجيل الخروج</button>
+    <!-- ===== Dashboard ===== -->
+    <div id="dashboard-section">
+        <div class="dashboard-header">
+            <div class="dashboard-logo">M.EMAD Dashboard</div>
+            <div class="header-actions">
+                <a href="index.html" class="btn-outline"><i class="fa-solid fa-eye"></i> عرض الموقع</a>
+                <button id="logout-btn" class="btn-danger-outline"><i class="fa-solid fa-right-from-bracket"></i> خروج</button>
             </div>
         </div>
-        
-        <form id="add-video-form">
-            <div class="form-group">
-                <label>رابط يوتيوب (مثال: https://www.youtube.com/watch?v=...)</label>
-                <input type="url" id="youtube-link" required>
-            </div>
-            <div class="form-group">
-                <label>اسم المشروع / الفيديو</label>
-                <input type="text" id="project-title" required>
-            </div>
-            <div class="form-group">
-                <label>التصنيف</label>
-                <select id="project-category" required>
-                    <option value="restaurants">مطاعم</option>
-                    <option value="clinics">عيادات طبية</option>
-                    <option value="cafes">كافيهات</option>
-                    <option value="other">أخرى</option>
-                </select>
-            </div>
-            <button type="submit" class="submit-btn">إضافة للفيديو</button>
-        </form>
 
-        <div class="videos-list">
-            <h3>الفيديوهات المرفوعة</h3>
-            <div id="videos-container">
-                <!-- سيتم عرض الفيديوهات هنا -->
-            </div>
+        <!-- Add Video Form -->
+        <div class="add-card">
+            <h3><i class="fa-solid fa-circle-plus"></i> إضافة فيديو جديد</h3>
+            <form id="add-video-form">
+                <div class="form-group">
+                    <label>رابط الفيديو (يوتيوب، فيسبوك، انستجرام، تيك توك)</label>
+                    <input type="url" id="video-link" placeholder="https://..." required>
+                    <div class="platform-badge" id="platform-badge"></div>
+                </div>
+                <div class="form-group">
+                    <label>الصورة المصغرة للفيديو (Thumbnail)</label>
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="thumbnail-input" accept="image/*">
+                        <div id="upload-placeholder">
+                            <div class="upload-icon"><i class="fa-regular fa-image"></i></div>
+                            <div class="upload-text">اضغط هنا أو اسحب الصورة المصغرة من جهازك<br><small style="opacity:0.6;">(إذا كان يوتيوب، ستُجلب الصورة تلقائياً)</small></div>
+                        </div>
+                        <img id="upload-preview" class="upload-preview" alt="Preview">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>اسم المشروع / الفيديو</label>
+                    <input type="text" id="project-title" placeholder="مثال: إعلان مطعم سيفود" required>
+                </div>
+                <div class="form-group">
+                    <label>التصنيف</label>
+                    <select id="project-category" required>
+                        <option value="restaurants">🍽️ مطاعم</option>
+                        <option value="clinics">🏥 عيادات طبية</option>
+                        <option value="cafes">☕ كافيهات</option>
+                        <option value="other">✨ أخرى</option>
+                    </select>
+                </div>
+                <div class="upload-progress-wrap" id="upload-progress-wrap">
+                    <div class="upload-progress-bar"><div class="upload-progress-fill" id="progress-fill"></div></div>
+                    <div class="upload-status" id="upload-status">جاري الرفع...</div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                    <i class="fa-solid fa-plus"></i> إضافة الفيديو
+                </button>
+            </form>
+        </div>
+
+        <!-- Videos List -->
+        <div class="videos-section">
+            <h3><i class="fa-solid fa-film"></i> الفيديوهات المضافة (<span id="videos-count">0</span>)</h3>
+            <div id="videos-container"></div>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
     <script type="module" src="dashboard.js"></script>
 </body>

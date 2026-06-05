@@ -1,6 +1,4 @@
 // إعدادات Firebase الخاصة بك
-// يرجى استبدال القيم أدناه بالقيم الخاصة بمشروعك من لوحة تحكم Firebase
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";

@@ -224,10 +224,14 @@ async function fetchPortfolioVideos() {
                     </div>
                 `;
                 
-                // Add Lightbox Event
+                // Add Lightbox Event (YouTube) or Open Link (other platforms)
                 card.addEventListener('click', () => {
-                    lightbox.style.display = 'flex';
-                    videoFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${data.videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+                    if (data.platform === 'youtube' && data.videoId) {
+                        lightbox.style.display = 'flex';
+                        videoFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${data.videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+                    } else {
+                        window.open(data.url, '_blank');
+                    }
                 });
                 
                 grid.appendChild(card);
