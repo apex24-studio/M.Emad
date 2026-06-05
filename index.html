@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Emad | Cinematic Video Editor</title>
+    <meta name="description" content="البورتفوليو الخاص بمحمد عماد - صانع قصص بصرية ومحرر فيديوهات سينمائية.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Readex+Pro:wght@200;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Locomotive Scroll CSS (Simulated via regular CSS for now) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader-content">
+            <div class="logo-loader">M<span>.</span>E</div>
+            <div class="progress-bar"><div class="progress"></div></div>
+        </div>
+    </div>
+
+    <!-- Magnetic Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-blur" id="cursor-blur"></div>
+
+    <!-- Header / Nav -->
+    <header>
+        <nav class="glass-nav">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-text">M.EMAD</span>
+                    <span class="logo-dot"></span>
+                </div>
+                <div class="nav-links">
+                    <a href="#hero" class="nav-item active">الرئيسية</a>
+                    <a href="#work" class="nav-item">معرض الأعمال</a>
+                    <a href="#services" class="nav-item">الخدمات</a>
+                    <a href="#contact" class="nav-item contact-pill">تكلم معي</a>
+                </div>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Dynamic Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="background-mesh"></div>
+            <div class="animated-grid"></div>
+            <div class="ambient-orb orb-1"></div>
+            <div class="ambient-orb orb-2"></div>
+            
+            <div class="container hero-container">
+                <div class="hero-layout">
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <span class="badge-dot"></span> جاهز لمشاريعك القادمة
+                        </div>
+                        <h1 class="hero-title">
+                            <span class="line">نحـول</span>
+                            <span class="line-gradient">الرؤى</span>
+                            <span class="line">إلى واقـع</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            لست مجرد محرر فيديوهات، بل أنا شريكك في صناعة الأثر البصري. أحول لقطاتك الخام إلى تجربة غامرة تخطف الأنظار وتخاطب المشاعر بدقة واحترافية متناهية.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#work" class="main-cta magnetic">
+                                <span>اكتشف سحر المونتاج</span>
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </a>
+                            <div class="scroll-hint">
+                                <div class="mouse-icon"></div>
+                                <span>مرر للإبهار</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-visual">
+                        <div class="experience-card glass">
+                            <span class="number">04+</span>
+                            <span class="label">سنوات إبداع</span>
+                        </div>
+                        <div class="main-frame">
+                            <div class="frame-border"></div>
+                            <div class="frame-content">
+                                <!-- Mohamed's Photo -->
+                                <div class="img-overlay"></div>
+                                <img src="assets/mohamed.png" alt="Mohamed Emad" class="user-hero-img">
+                            </div>
+                            <!-- Floating Elements -->
+                            <div class="tool-icon tool-1"><i class="fa-solid fa-video"></i></div>
+                            <div class="tool-icon tool-2"><i class="fa-solid fa-scissors"></i></div>
+                            <div class="tool-icon tool-3"><i class="fa-solid fa-clapperboard"></i></div>
+                            <div class="tool-icon tool-4"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Strip -->
+        <section class="stats-strip">
+            <div class="ticker">
+                <span>ADOBE PREMIERE PRO</span>
+                <span class="dot"></span>
+                <span>AFTER EFFECTS</span>
+                <span class="dot"></span>
+                <span>DAVINCI RESOLVE</span>
+                <span class="dot"></span>
+                <span>COLOR GRADING EXPERT</span>
+                <span class="dot"></span>
+                <span>SOUND DESIGN</span>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services-section">
+            <div class="container">
+                <div class="section-title-area">
+                    <h2 class="title-bg">SERVICES</h2>
+                    <h3 class="title-top">رؤية فنية.. تنفيذ احترافي</h3>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card glass">
+                        <div class="service-icon"><i class="fa-solid fa-clapperboard"></i></div>
+                        <h3>سـرد القصص البصري</h3>
+                        <p>لا أقوم بمجرد قص ودمج، بل أبني إيقاعاً يسحب المشاهد لقلب القصة ويجعله يعيش كل لحظة.</p>
+                    </div>
+                    <div class="service-card glass">
+                        <div class="service-icon"><i class="fa-solid fa-palette"></i></div>
+                        <h3>الإخراج اللوني السينمائي</h3>
+                        <p>أعطي فيديوهاتك هويتها الخاصة، من خلال تدرجات لونية تثير المشاعر وتضفي عمقاً احترافياً.</p>
+                    </div>
+                    <div class="service-card glass">
+                        <div class="service-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                        <h3>هندسة التأثير والجاذبية</h3>
+                        <p>إضافة مؤثرات صوتية وبصرية تزيد من حيوية المحتوى وتحول المشاهدة إلى تجربة غامرة.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Showcase Section -->
+        <section id="work" class="work-section">
+            <div class="container">
+                <div class="section-title-area">
+                    <h2 class="title-bg">WORKS</h2>
+                    <h3 class="title-top">أحدث المشاريع</h3>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="filter-menu">
+                    <button class="filter-btn active" data-filter="all">الكل</button>
+                    <button class="filter-btn" data-filter="restaurants">مطاعم</button>
+                    <button class="filter-btn" data-filter="clinics">عيادات طبية</button>
+                    <button class="filter-btn" data-filter="cafes">كافيهات</button>
+                </div>
+
+                <div class="work-grid">
+                    <!-- Project 1 -->
+                    <div class="work-card large" data-category="restaurants">
+                        <div class="card-inner">
+                            <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=1200" alt="Restaurant Video">
+                            <div class="card-overlay">
+                                <div class="card-meta">
+                                    <span class="category">مطاعم</span>
+                                    <h4 class="project-title">إعلان مطعم مأكولات بحرية</h4>
+                                </div>
+                                <div class="view-btn">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="work-card" data-category="clinics">
+                        <div class="card-inner">
+                            <img src="https://images.unsplash.com/photo-1638202993928-7267aad84c31?auto=format&fit=crop&q=80&w=600" alt="Clinic Video">
+                            <div class="card-overlay">
+                                <div class="card-meta">
+                                    <span class="category">عيادات طبية</span>
+                                    <h4 class="project-title">فيديو تعريفي لعيادة أسنان</h4>
+                                </div>
+                                <div class="view-btn">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="work-card" data-category="cafes">
+                        <div class="card-inner">
+                            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=600" alt="Cafe Video">
+                            <div class="card-overlay">
+                                <div class="card-meta">
+                                    <span class="category">كافيهات</span>
+                                    <h4 class="project-title">تغطية افتتاح كافيه</h4>
+                                </div>
+                                <div class="view-btn">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="more-works">
+                    <a href="#" class="outline-btn">شاهد المزيد على بيهانس</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="contact-card glass">
+                    <div class="contact-text">
+                        <h2>هل أنت مستعد لنقل محتواك إلى المستوى التالي؟</h2>
+                        <p>الفيديو القادم ليس مجرد مشروع، بل هو بصمة ستبقى. دعنا نصنعها سوياً.</p>
+                        <div class="contact-links">
+                            <a href="mailto:info@mohamedemad.com" class="c-link">mohamed.emad@pro.com</a>
+                            <div class="social-pills">
+                                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="#"><i class="fa-brands fa-behance"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-btn-area">
+                        <a href="#" class="liquid-btn">ابدأ الآن</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <p>© 2024 محمد عماد - كل الحقوق محفوظة</p>
+            <div class="footer-links">
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">الشروط والأحكام</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <div class="close-lightbox">&times;</div>
+            <div id="video-frame"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
