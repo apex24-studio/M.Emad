@@ -16,6 +16,20 @@
     
     <!-- Locomotive Scroll CSS (Simulated via regular CSS for now) -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Critical: Hide custom cursor on touch/mobile devices immediately -->
+    <style>
+        @media (hover: none), (pointer: coarse), (max-width: 1024px) {
+            #cursor, #cursor-blur, .cursor, .cursor-blur {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                width: 0 !important;
+                height: 0 !important;
+                pointer-events: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Preloader -->
