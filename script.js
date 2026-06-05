@@ -1,3 +1,5 @@
+import { db, collection, getDocs } from './firebase-config.js';
+
 // --- Preloader Logic ---
 window.addEventListener('load', () => {
     const preloader = document.querySelector('.preloader');
@@ -179,3 +181,95 @@ filterBtns.forEach(btn => {
         });
     });
 });
+
+// --- Dynamic Firebase Fetch ---
+async function fetchPortfolioVideos() {
+    const grid = document.getElementById('dynamic-work-grid');
+    if (!grid) return;
+    
+    try {
+        const querySnapshot = await getDocs(collection(db, "videos"));
+        if (!querySnapshot.empty) {
+            // مسح العناصر الثابتة إذا وجدت بيانات في القاعدة
+            grid.innerHTML = '';
+            
+            // قاموس لترجمة التصنيفات
+            const categoriesMap = {
+                'restaurants': 'مطاعم',
+                'clinics': 'عيادات طبية',
+                'cafes': 'كافيهات',
+                'other': 'أخرى'
+            };
+
+            let isFirst = true;
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                
+                const card = document.createElement('div');
+                card.className = `work-card ${isFirst ? 'large' : ''} reveal-init is-visible`;
+                card.setAttribute('data-category', data.category);
+                
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <img src="${data.thumbnailUrl}" alt="${data.title}">
+                        <div class="card-overlay">
+                            <div class="card-meta">
+                                <span class="category">${categoriesMap[data.category] || data.category}</span>
+                                <h4 class="project-title">${data.title}</h4>
+                            </div>
+                            <div class="view-btn">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add Lightbox Event
+                card.addEventListener('click', () => {
+                    lightbox.style.display = 'flex';
+                    videoFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${data.videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+                });
+                
+                grid.appendChild(card);
+                isFirst = false;
+            });
+            
+            // Re-bind filter events to new cards
+            const newCards = document.querySelectorAll('.work-card');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filterValue = btn.getAttribute('data-filter');
+                    newCards.forEach(c => {
+                        if (filterValue === 'all' || c.getAttribute('data-category') === filterValue) {
+                            c.classList.remove('hide');
+                        } else {
+                            c.classList.add('hide');
+                        }
+                    });
+                });
+            });
+            
+            // Re-bind Hover Effects for new cards
+            newCards.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    cursor.style.width = '40px';
+                    cursor.style.height = '40px';
+                    cursor.style.background = 'rgba(255,255,255,0.1)';
+                    cursor.style.backdropFilter = 'blur(2px)';
+                    cursor.style.border = '1px solid white';
+                });
+                item.addEventListener('mouseleave', () => {
+                    cursor.style.width = '10px';
+                    cursor.style.height = '10px';
+                    cursor.style.background = 'white';
+                    cursor.style.backdropFilter = 'none';
+                    cursor.style.border = 'none';
+                });
+            });
+        }
+    } catch(e) {
+        console.log("استخدام الفيديوهات الثابتة لعدم وجود إعدادات Firebase بعد.");
+    }
+}
+
+fetchPortfolioVideos();
