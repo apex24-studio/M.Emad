@@ -35,27 +35,15 @@ body {
     cursor: none; /* Hide default for custom cursor */
 }
 
-/* Show default cursor on touch devices but style the custom one */
+/* Hide custom cursor completely on touch/mobile devices */
 @media (hover: none) and (pointer: coarse) {
     body { cursor: auto; }
-    .cursor {
-        display: block !important;
-        opacity: 0;
-        width: 32px;
-        height: 32px;
-        background: rgba(0, 210, 255, 0.15);
-        border: 2px solid var(--primary);
-        box-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
-        mix-blend-mode: normal;
-        transition: opacity 0.25s ease, width 0.25s ease, height 0.25s ease;
-    }
+    .cursor,
     .cursor-blur {
-        display: block !important;
-        opacity: 0;
-        width: 160px;
-        height: 160px;
-        background: radial-gradient(circle, rgba(0, 210, 255, 0.25) 0%, transparent 70%);
-        transition: opacity 0.25s ease;
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
     }
 }
 
