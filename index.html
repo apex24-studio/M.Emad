@@ -87,6 +87,10 @@
                                 <span>اكتشف سحر المونتاج</span>
                                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                             </a>
+                            <a href="#contact" class="secondary-cta magnetic">
+                                <span>تواصل معي</span>
+                                <i class="fa-regular fa-comment-dots"></i>
+                            </a>
                             <div class="scroll-hint">
                                 <div class="mouse-icon"></div>
                                 <span>مرر للإبهار</span>
@@ -125,6 +129,8 @@
                 <span>AFTER EFFECTS</span>
                 <span class="dot"></span>
                 <span>DAVINCI RESOLVE</span>
+                <span class="dot"></span>
+                <span>CAPCUT</span>
                 <span class="dot"></span>
                 <span>COLOR GRADING EXPERT</span>
                 <span class="dot"></span>
@@ -239,16 +245,15 @@
                         <h2>هل أنت مستعد لنقل محتواك إلى المستوى التالي؟</h2>
                         <p>الفيديو القادم ليس مجرد مشروع، بل هو بصمة ستبقى. دعنا نصنعها سوياً.</p>
                         <div class="contact-links">
-                            <a href="mailto:info@mohamedemad.com" class="c-link">mohamed.emad@pro.com</a>
                             <div class="social-pills">
-                                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
-                                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                                <a href="#"><i class="fa-brands fa-behance"></i></a>
+                                <a href="https://wa.me/201001376298" class="whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                                <a href="https://m.me/312806755752815" class="facebook" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="https://www.tiktok.com/@mohamed_emad1010" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="contact-btn-area">
-                        <a href="#" class="liquid-btn">ابدأ الآن</a>
+                        <a href="javascript:void(0)" id="start-now-btn" class="liquid-btn">ابدأ الآن</a>
                     </div>
                 </div>
             </div>
@@ -265,6 +270,33 @@
         </div>
     </footer>
 
+    <!-- Social Contact Modal -->
+    <div id="social-modal" class="social-modal-overlay">
+        <div class="social-modal-card">
+            <button class="social-modal-close" id="social-modal-close" aria-label="إغلاق">&times;</button>
+            <div class="social-modal-glow"></div>
+            <h3 class="social-modal-title">تواصل معي الآن</h3>
+            <p class="social-modal-subtitle">اختر وسيلة التواصل المفضلة لديك</p>
+            <div class="social-modal-icons">
+                <a href="https://wa.me/201001376298" target="_blank" class="smi-link whatsapp" id="smi-whatsapp">
+                    <div class="smi-flash"></div>
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>واتساب</span>
+                </a>
+                <a href="https://m.me/312806755752815" target="_blank" class="smi-link facebook" id="smi-facebook">
+                    <div class="smi-flash"></div>
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <span>فيسبوك</span>
+                </a>
+                <a href="https://www.tiktok.com/@mohamed_emad1010" target="_blank" class="smi-link tiktok" id="smi-tiktok">
+                    <div class="smi-flash"></div>
+                    <i class="fa-brands fa-tiktok"></i>
+                    <span>تيك توك</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Video Lightbox -->
     <div id="lightbox" class="lightbox">
         <div class="lightbox-content">
@@ -273,6 +305,13 @@
         </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
 </body>
 </html>

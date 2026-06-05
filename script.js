@@ -1,9 +1,9 @@
-import { db, collection, getDocs } from './firebase-config.js';
 
 // --- Preloader Logic ---
-window.addEventListener('load', () => {
+function hidePreloader() {
     const preloader = document.querySelector('.preloader');
     const progress = document.querySelector('.progress');
+    if (!preloader) return;
     
     let width = 0;
     const interval = setInterval(() => {
@@ -16,10 +16,16 @@ window.addEventListener('load', () => {
         } else {
             width += Math.random() * 20;
             if (width > 100) width = 100;
-            progress.style.width = width + '%';
+            if (progress) progress.style.width = width + '%';
         }
     }, 100);
-});
+}
+
+if (document.readyState === 'complete') {
+    hidePreloader();
+} else {
+    window.addEventListener('load', hidePreloader);
+}
 
 // --- Hamburger / Mobile Menu ---
 const menuToggle = document.querySelector('.menu-toggle');
@@ -52,7 +58,7 @@ if (menuToggle && mobileNav) {
     });
 }
 
-// --- Advanced Magnetic Cursor (desktop only) ---
+// --- Advanced Magnetic Cursor (desktop and mobile touch) ---
 const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 const cursor = document.getElementById('cursor');
 const cursorBlur = document.getElementById('cursor-blur');
@@ -62,15 +68,55 @@ let mouseY = 0;
 let cursorX = 0;
 let cursorY = 0;
 
-if (!isTouchDevice && cursor && cursorBlur) {
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+if (cursor && cursorBlur) {
+    if (!isTouchDevice) {
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Immediate cursor
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+        });
+    } else {
+        // Touch devices logic (makes the circular cursor follow the touch)
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                cursor.style.opacity = '1';
+                cursorBlur.style.opacity = '0.5';
+                
+                mouseX = e.touches[0].clientX;
+                mouseY = e.touches[0].clientY;
+                
+                // Initialize follower position immediately to avoid lag on first tap
+                cursorX = mouseX;
+                cursorY = mouseY;
+                
+                cursor.style.left = mouseX + 'px';
+                cursor.style.top = mouseY + 'px';
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                mouseX = e.touches[0].clientX;
+                mouseY = e.touches[0].clientY;
+                
+                cursor.style.left = mouseX + 'px';
+                cursor.style.top = mouseY + 'px';
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+            cursor.style.opacity = '0';
+            cursorBlur.style.opacity = '0';
+        }, { passive: true });
         
-        // Immediate cursor
-        cursor.style.left = mouseX + 'px';
-        cursor.style.top = mouseY + 'px';
-    });
+        document.addEventListener('touchcancel', () => {
+            cursor.style.opacity = '0';
+            cursorBlur.style.opacity = '0';
+        }, { passive: true });
+    }
 
     // Smooth blur follower
     function animateCursor() {
@@ -226,7 +272,7 @@ async function fetchPortfolioVideos() {
     if (!grid) return;
     
     try {
-        const querySnapshot = await getDocs(collection(db, "videos"));
+        const querySnapshot = await db.collection("videos").get();
         if (!querySnapshot.empty) {
             // مسح العناصر الثابتة إذا وجدت بيانات في القاعدة
             grid.innerHTML = '';
@@ -317,3 +363,45 @@ async function fetchPortfolioVideos() {
 }
 
 fetchPortfolioVideos();
+
+// --- Social Contact Modal (زر "ابدأ الآن") ---
+const startNowBtn = document.getElementById('start-now-btn');
+const socialModal = document.getElementById('social-modal');
+const socialModalClose = document.getElementById('social-modal-close');
+
+function openSocialModal() {
+    socialModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSocialModal() {
+    socialModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+if (startNowBtn && socialModal) {
+    startNowBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openSocialModal();
+    });
+}
+
+if (socialModalClose) {
+    socialModalClose.addEventListener('click', closeSocialModal);
+}
+
+if (socialModal) {
+    // إغلاق عند الضغط على الخلفية
+    socialModal.addEventListener('click', (e) => {
+        if (e.target === socialModal) {
+            closeSocialModal();
+        }
+    });
+}
+
+// إغلاق بزر Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && socialModal && socialModal.classList.contains('active')) {
+        closeSocialModal();
+    }
+});

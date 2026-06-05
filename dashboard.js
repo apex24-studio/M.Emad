@@ -1,8 +1,4 @@
-import {
-    db, auth,
-    collection, addDoc, getDocs, deleteDoc, doc,
-    signInWithEmailAndPassword, onAuthStateChanged, signOut
-} from './firebase-config.js';
+
 
 // ===== DOM =====
 const loginSection = document.getElementById('login-section');
@@ -141,7 +137,7 @@ function getYouTubeID(url) {
 }
 
 // ===== Auth State =====
-onAuthStateChanged(auth, (user) => {
+auth.onAuthStateChanged((user) => {
     if (user) {
         loginSection.style.display = 'none';
         dashboardSection.style.display = 'block';
@@ -158,12 +154,12 @@ loginForm.addEventListener('submit', (e) => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     loginError.style.display = 'none';
-    signInWithEmailAndPassword(auth, email, password)
+    auth.signInWithEmailAndPassword(email, password)
         .catch(() => { loginError.style.display = 'block'; });
 });
 
 // ===== Logout =====
-logoutBtn.addEventListener('click', () => signOut(auth));
+logoutBtn.addEventListener('click', () => auth.signOut());
 
 // ===== Add Video =====
 addVideoForm.addEventListener('submit', async (e) => {
@@ -193,14 +189,14 @@ addVideoForm.addEventListener('submit', async (e) => {
             thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
         }
 
-        await addDoc(collection(db, "videos"), {
+        await db.collection("videos").add({
             title,
             category,
             url,
             platform,
             thumbnailUrl,
             videoId: platform === 'youtube' ? (getYouTubeID(url) || '') : '',
-            createdAt: new Date()
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         // Reset form
@@ -229,7 +225,7 @@ const categoriesMap = { restaurants: 'مطاعم', clinics: 'عيادات طبي
 async function loadVideos() {
     videosContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>جاري التحميل...</p></div>`;
     try {
-        const querySnapshot = await getDocs(collection(db, "videos"));
+        const querySnapshot = await db.collection("videos").get();
         videosCount.textContent = querySnapshot.size;
 
         if (querySnapshot.empty) {
@@ -272,7 +268,7 @@ async function loadVideos() {
                 if (!confirm('هل أنت متأكد من حذف هذا الفيديو؟')) return;
                 const docId = btn.getAttribute('data-id');
                 try {
-                    await deleteDoc(doc(db, "videos", docId));
+                    await db.collection("videos").doc(docId).delete();
                     showToast('🗑️ تم حذف الفيديو', 'success');
                     loadVideos();
                 } catch (err) {

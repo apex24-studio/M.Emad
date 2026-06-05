@@ -1,8 +1,4 @@
 // إعدادات Firebase الخاصة بك
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyDbhNumsq20K2fdhLahFb1QZnRcDsrmc8s",
   authDomain: "leo10-cf0e1.firebaseapp.com",
@@ -13,9 +9,7 @@ const firebaseConfig = {
   measurementId: "G-W6H88EMCHK"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-export { db, auth, collection, addDoc, getDocs, deleteDoc, doc, signInWithEmailAndPassword, onAuthStateChanged, signOut };
+// Initialize Firebase globally using compat SDK
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
