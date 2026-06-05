@@ -58,7 +58,7 @@ if (menuToggle && mobileNav) {
     });
 }
 
-// --- Advanced Magnetic Cursor (desktop and mobile touch) ---
+// --- Advanced Magnetic Cursor (desktop only) ---
 const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 const cursor = document.getElementById('cursor');
 const cursorBlur = document.getElementById('cursor-blur');
@@ -69,7 +69,11 @@ let cursorX = 0;
 let cursorY = 0;
 
 if (cursor && cursorBlur) {
-    if (!isTouchDevice) {
+    if (isTouchDevice) {
+        // Hide cursor completely on touch/mobile devices
+        cursor.style.display = 'none';
+        cursorBlur.style.display = 'none';
+    } else {
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
@@ -78,60 +82,22 @@ if (cursor && cursorBlur) {
             cursor.style.left = mouseX + 'px';
             cursor.style.top = mouseY + 'px';
         });
-    } else {
-        // Touch devices logic (makes the circular cursor follow the touch)
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 0) {
-                cursor.style.opacity = '1';
-                cursorBlur.style.opacity = '0.5';
-                
-                mouseX = e.touches[0].clientX;
-                mouseY = e.touches[0].clientY;
-                
-                // Initialize follower position immediately to avoid lag on first tap
-                cursorX = mouseX;
-                cursorY = mouseY;
-                
-                cursor.style.left = mouseX + 'px';
-                cursor.style.top = mouseY + 'px';
-            }
-        }, { passive: true });
 
-        document.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 0) {
-                mouseX = e.touches[0].clientX;
-                mouseY = e.touches[0].clientY;
-                
-                cursor.style.left = mouseX + 'px';
-                cursor.style.top = mouseY + 'px';
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchend', () => {
-            cursor.style.opacity = '0';
-            cursorBlur.style.opacity = '0';
-        }, { passive: true });
-        
-        document.addEventListener('touchcancel', () => {
-            cursor.style.opacity = '0';
-            cursorBlur.style.opacity = '0';
-        }, { passive: true });
+        // Smooth blur follower
+        function animateCursor() {
+            let dx = mouseX - cursorX;
+            let dy = mouseY - cursorY;
+            
+            cursorX += dx * 0.1;
+            cursorY += dy * 0.1;
+            
+            cursorBlur.style.left = cursorX + 'px';
+            cursorBlur.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
     }
-
-    // Smooth blur follower
-    function animateCursor() {
-        let dx = mouseX - cursorX;
-        let dy = mouseY - cursorY;
-        
-        cursorX += dx * 0.1;
-        cursorY += dy * 0.1;
-        
-        cursorBlur.style.left = cursorX + 'px';
-        cursorBlur.style.top = cursorY + 'px';
-        
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
 }
 
 // --- Magnetic Elements (desktop only) ---
