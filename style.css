@@ -843,6 +843,18 @@ header {
     box-shadow: -3px -3px 10px rgba(0, 242, 254, 0.7), 3px 3px 10px rgba(254, 44, 85, 0.7);
 }
 
+.social-pills a.instagram {
+    color: #E1306C;
+    border-color: rgba(225, 48, 108, 0.3);
+    background: rgba(225, 48, 108, 0.05);
+}
+.social-pills a.instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: #fff;
+    border-color: #dc2743;
+    box-shadow: 0 0 20px rgba(220, 39, 67, 0.6);
+}
+
 .liquid-btn {
     padding: 25px 60px;
     background: var(--white);
@@ -1145,6 +1157,9 @@ header {
 .social-modal-overlay.active .smi-link:nth-child(3) {
     animation: smiEntrance 0.5s 0.41s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+.social-modal-overlay.active .smi-link:nth-child(4) {
+    animation: smiEntrance 0.5s 0.54s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
 @keyframes smiEntrance {
     to { opacity: 1; transform: translateY(0); }
@@ -1235,6 +1250,29 @@ header {
 @keyframes flashPulse-tt {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 1; box-shadow: -3px -3px 20px rgba(254, 44, 85, 0.4) inset, 3px 3px 20px rgba(0, 242, 254, 0.4) inset; }
+}
+
+/* Instagram flash */
+.smi-link.instagram {
+    color: #E1306C;
+    border-color: rgba(225, 48, 108, 0.25);
+}
+.smi-link.instagram .smi-flash {
+    background: radial-gradient(circle at 50% 30%, rgba(225, 48, 108, 0.25), transparent 70%);
+    animation: flashPulse-ig 2s 2.6s ease-in-out infinite;
+}
+.smi-link.instagram:hover {
+    transform: translateY(-6px) scale(1.06);
+    border-color: #dc2743;
+    box-shadow: 0 10px 40px rgba(220, 39, 67, 0.5), 0 0 20px rgba(240, 148, 51, 0.3);
+    color: #fff;
+    background: linear-gradient(135deg, rgba(240, 148, 51, 0.15), rgba(220, 39, 67, 0.15), rgba(188, 24, 136, 0.15));
+}
+.smi-link.instagram:hover i { transform: scale(1.15) rotate(-5deg); }
+
+@keyframes flashPulse-ig {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; box-shadow: 0 0 30px rgba(220, 39, 67, 0.5) inset; }
 }
 
 /* Responsive modal */
