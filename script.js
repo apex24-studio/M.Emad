@@ -253,19 +253,24 @@ async function fetchPortfolioVideos() {
 
             let isFirst = true;
             querySnapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                
+                const data = docSnap.data() || {};
+                const title = data.title || 'مشروع جديد';
+                const category = data.category || 'other';
+                const url = data.url || '#';
+                const platform = data.platform || 'other';
+                const thumbnailUrl = data.thumbnailUrl || 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=1200';
+
                 const card = document.createElement('div');
                 card.className = `work-card ${isFirst ? 'large' : ''} reveal-init is-visible`;
-                card.setAttribute('data-category', data.category);
+                card.setAttribute('data-category', category);
                 
                 card.innerHTML = `
                     <div class="card-inner">
-                        <img src="${data.thumbnailUrl}" alt="${data.title}">
+                        <img src="${thumbnailUrl}" alt="${title}" onerror="this.src='https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=1200'">
                         <div class="card-overlay">
                             <div class="card-meta">
-                                <span class="category">${categoriesMap[data.category] || data.category}</span>
-                                <h4 class="project-title">${data.title}</h4>
+                                <span class="category">${categoriesMap[category] || category}</span>
+                                <h4 class="project-title">${title}</h4>
                             </div>
                             <div class="view-btn">
                                 <i class="fa-solid fa-play"></i>
@@ -276,11 +281,11 @@ async function fetchPortfolioVideos() {
                 
                 // Add Lightbox Event (YouTube) or Open Link (other platforms)
                 card.addEventListener('click', () => {
-                    if (data.platform === 'youtube' && data.videoId) {
+                    if (platform === 'youtube' && data.videoId) {
                         lightbox.style.display = 'flex';
                         videoFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${data.videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
-                    } else {
-                        window.open(data.url, '_blank');
+                    } else if (url && url !== '#') {
+                        window.open(url, '_blank');
                     }
                 });
                 

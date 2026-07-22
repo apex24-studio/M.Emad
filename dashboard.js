@@ -1,6 +1,4 @@
-
-
-// ===== DOM =====
+// ===== DOM Elements =====
 const loginSection = document.getElementById('login-section');
 const dashboardSection = document.getElementById('dashboard-section');
 const loginForm = document.getElementById('login-form');
@@ -30,13 +28,24 @@ function showToast(msg, type = 'success') {
     setTimeout(() => { toast.classList.remove('show'); }, 3500);
 }
 
+// ===== Normalize & Sanitize URL =====
+function normalizeUrl(inputUrl) {
+    if (!inputUrl) return '';
+    let url = inputUrl.trim();
+    if (url && !/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+    }
+    return url;
+}
+
 // ===== Platform Detection =====
 function detectPlatform(url) {
     if (!url) return null;
-    if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
-    if (url.includes('facebook.com') || url.includes('fb.com') || url.includes('fb.watch')) return 'facebook';
-    if (url.includes('instagram.com')) return 'instagram';
-    if (url.includes('tiktok.com')) return 'tiktok';
+    const cleanUrl = url.toLowerCase();
+    if (cleanUrl.includes('youtube.com') || cleanUrl.includes('youtu.be')) return 'youtube';
+    if (cleanUrl.includes('facebook.com') || cleanUrl.includes('fb.com') || cleanUrl.includes('fb.watch')) return 'facebook';
+    if (cleanUrl.includes('instagram.com')) return 'instagram';
+    if (cleanUrl.includes('tiktok.com')) return 'tiktok';
     return 'other';
 }
 
@@ -48,9 +57,57 @@ const platformInfo = {
     other:     { icon: 'fa-solid fa-link',         label: 'رابط خارجي', class: 'other',     color: '#7c5cbf' }
 };
 
+// ===== YouTube ID Extractor (Supports Shorts, Watch, Embed, shorten) =====
+function getYouTubeID(url) {
+    if (!url) return null;
+    const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+}
+
+// ===== Generate Default Platform Canvas Image =====
+function getDefaultThumbnail(platform, title) {
+    const info = platformInfo[platform] || platformInfo['other'];
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 360;
+    const ctx = canvas.getContext('2d');
+
+    // Background gradient
+    const grad = ctx.createLinearGradient(0, 0, 600, 360);
+    grad.addColorStop(0, '#1a1a2e');
+    grad.addColorStop(1, '#0f0c20');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 600, 360);
+
+    // Platform accent line
+    ctx.fillStyle = info.color || '#7c5cbf';
+    ctx.fillRect(0, 350, 600, 10);
+
+    // Platform Name Text
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 36px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(info.label, 300, 160);
+
+    // Video Title Text
+    ctx.fillStyle = '#a0a0c0';
+    ctx.font = '20px sans-serif';
+    const displayTitle = title ? (title.length > 35 ? title.substring(0, 35) + '...' : title) : 'فيديو جديد';
+    ctx.fillText(displayTitle, 300, 210);
+
+    return canvas.toDataURL('image/jpeg', 0.85);
+}
+
 // ===== Watch link input =====
 document.getElementById('video-link').addEventListener('input', (e) => {
-    const url = e.target.value.trim();
+    let rawUrl = e.target.value.trim();
+    if (!rawUrl) {
+        platformBadge.className = 'platform-badge';
+        return;
+    }
+
+    const url = normalizeUrl(rawUrl);
     const platform = detectPlatform(url);
 
     if (platform && url.length > 5) {
@@ -58,16 +115,15 @@ document.getElementById('video-link').addEventListener('input', (e) => {
         platformBadge.innerHTML = `<i class="${info.icon}"></i> ${info.label}`;
         platformBadge.className = `platform-badge show ${info.class}`;
 
-        // Auto-fill YouTube thumbnail (no upload needed)
+        // Auto-fill YouTube thumbnail
         if (platform === 'youtube' && !selectedFile) {
             const videoId = getYouTubeID(url);
             if (videoId) {
-                const ytThumb = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                const ytThumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
                 uploadPreview.src = ytThumb;
                 uploadPreview.style.display = 'block';
                 uploadPlaceholder.style.display = 'none';
                 uploadArea.classList.add('has-image');
-                base64Thumbnail = null; // Will use YouTube URL directly
             }
         }
     } else {
@@ -77,7 +133,7 @@ document.getElementById('video-link').addEventListener('input', (e) => {
 
 // ===== Image Compression to Base64 =====
 function compressImage(file, maxWidth = 800, quality = 0.7) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
             const img = new Image();
@@ -86,7 +142,6 @@ function compressImage(file, maxWidth = 800, quality = 0.7) {
                 let width = img.width;
                 let height = img.height;
 
-                // Scale down if too large
                 if (width > maxWidth) {
                     height = (height * maxWidth) / width;
                     width = maxWidth;
@@ -96,12 +151,12 @@ function compressImage(file, maxWidth = 800, quality = 0.7) {
                 canvas.height = height;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-
-                // Convert to compressed base64
                 resolve(canvas.toDataURL('image/jpeg', quality));
             };
+            img.onerror = () => reject(new Error('فشل قراءة الصورة'));
             img.src = e.target.result;
         };
+        reader.onerror = () => reject(new Error('فشل رفع الملف'));
         reader.readAsDataURL(file);
     });
 }
@@ -116,25 +171,21 @@ thumbnailInput.addEventListener('change', async (e) => {
     uploadStatus.textContent = 'جاري ضغط الصورة...';
     progressFill.style.width = '50%';
 
-    // Compress image
-    base64Thumbnail = await compressImage(file);
+    try {
+        base64Thumbnail = await compressImage(file);
+        uploadPreview.src = base64Thumbnail;
+        uploadPreview.style.display = 'block';
+        uploadPlaceholder.style.display = 'none';
+        uploadArea.classList.add('has-image');
 
-    uploadPreview.src = base64Thumbnail;
-    uploadPreview.style.display = 'block';
-    uploadPlaceholder.style.display = 'none';
-    uploadArea.classList.add('has-image');
-
-    progressFill.style.width = '100%';
-    uploadStatus.textContent = 'تم ضغط الصورة ✅';
-    setTimeout(() => { progressWrap.style.display = 'none'; progressFill.style.width = '0%'; }, 1500);
+        progressFill.style.width = '100%';
+        uploadStatus.textContent = 'تم ضغط الصورة ✅';
+        setTimeout(() => { progressWrap.style.display = 'none'; progressFill.style.width = '0%'; }, 1500);
+    } catch (err) {
+        progressWrap.style.display = 'none';
+        showToast('❌ تعذر معالجة الصورة المصغرة', 'error');
+    }
 });
-
-// ===== YouTube ID Extractor =====
-function getYouTubeID(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-}
 
 // ===== Auth State =====
 auth.onAuthStateChanged((user) => {
@@ -151,11 +202,15 @@ auth.onAuthStateChanged((user) => {
 // ===== Login =====
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     loginError.style.display = 'none';
     auth.signInWithEmailAndPassword(email, password)
-        .catch(() => { loginError.style.display = 'block'; });
+        .catch((err) => {
+            console.error('Login error:', err);
+            loginError.style.display = 'block';
+            loginError.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+        });
 });
 
 // ===== Logout =====
@@ -165,14 +220,14 @@ logoutBtn.addEventListener('click', () => auth.signOut());
 addVideoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const url = document.getElementById('video-link').value.trim();
+    const rawUrl = document.getElementById('video-link').value;
+    const url = normalizeUrl(rawUrl);
     const title = document.getElementById('project-title').value.trim();
     const category = document.getElementById('project-category').value;
     const platform = detectPlatform(url) || 'other';
 
-    // For non-YouTube, require a thumbnail
-    if (platform !== 'youtube' && !base64Thumbnail) {
-        showToast('⚠️ يرجى رفع صورة مصغرة للفيديو', 'error');
+    if (!url || url.length < 5) {
+        showToast('⚠️ يرجى إدخال رابط فيديو صحيح', 'error');
         return;
     }
 
@@ -180,13 +235,20 @@ addVideoForm.addEventListener('submit', async (e) => {
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
 
     try {
-        // Determine final thumbnail URL
         let thumbnailUrl = '';
-        if (base64Thumbnail) {
-            thumbnailUrl = base64Thumbnail; // base64 stored in Firestore
-        } else if (platform === 'youtube') {
-            const videoId = getYouTubeID(url);
-            thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
+        let videoId = '';
+
+        if (platform === 'youtube') {
+            videoId = getYouTubeID(url) || '';
+            if (base64Thumbnail) {
+                thumbnailUrl = base64Thumbnail;
+            } else if (videoId) {
+                thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            } else {
+                thumbnailUrl = getDefaultThumbnail(platform, title);
+            }
+        } else {
+            thumbnailUrl = base64Thumbnail ? base64Thumbnail : getDefaultThumbnail(platform, title);
         }
 
         await db.collection("videos").add({
@@ -195,7 +257,7 @@ addVideoForm.addEventListener('submit', async (e) => {
             url,
             platform,
             thumbnailUrl,
-            videoId: platform === 'youtube' ? (getYouTubeID(url) || '') : '',
+            videoId,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -211,8 +273,8 @@ addVideoForm.addEventListener('submit', async (e) => {
         showToast('✅ تم إضافة الفيديو بنجاح!', 'success');
         loadVideos();
     } catch (err) {
-        console.error(err);
-        showToast('❌ حدث خطأ، حاول مجدداً', 'error');
+        console.error('Error adding video:', err);
+        showToast('❌ حدث خطأ: ' + (err.message || 'حاول مجدداً'), 'error');
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fa-solid fa-plus"></i> إضافة الفيديو';
@@ -222,10 +284,68 @@ addVideoForm.addEventListener('submit', async (e) => {
 // ===== Load Videos =====
 const categoriesMap = { restaurants: 'مطاعم', clinics: 'عيادات طبية', cafes: 'كافيهات', other: 'أخرى' };
 
+function renderVideoItem(docSnap) {
+    const data = docSnap.data() || {};
+    const id = docSnap.id;
+    const title = data.title || 'فيديو بدون عنوان';
+    const url = data.url || '';
+    const platform = data.platform || 'other';
+    const category = data.category || 'other';
+    const thumbnailUrl = data.thumbnailUrl || 'https://placehold.co/100x60/1a1a2e/7c5cbf?text=No+Image';
+
+    const platInfo = platformInfo[platform] || platformInfo['other'];
+    const displayUrl = url.length > 55 ? url.substring(0, 55) + '...' : url;
+
+    const item = document.createElement('div');
+    item.className = 'video-item';
+    item.innerHTML = `
+        <div class="video-info">
+            <img class="video-thumb" src="${thumbnailUrl}" alt="${title}" onerror="this.src='https://placehold.co/100x60/1a1a2e/7c5cbf?text=No+Image'">
+            <div class="video-meta">
+                <h4>${title}</h4>
+                <div class="meta-row">
+                    <span class="cat-badge">${categoriesMap[category] || category}</span>
+                    <span class="plat-badge" style="font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:20px;background:rgba(0,0,0,0.2);border:1px solid ${platInfo.color}33;color:${platInfo.color}">
+                        <i class="${platInfo.icon}"></i> ${platInfo.label}
+                    </span>
+                </div>
+                <div class="video-link">${displayUrl}</div>
+            </div>
+        </div>
+        <button class="delete-btn" data-id="${id}">
+            <i class="fa-solid fa-trash"></i> حذف
+        </button>
+    `;
+    return item;
+}
+
+function bindDeleteEvents() {
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            if (!confirm('هل أنت متأكد من حذف هذا الفيديو؟')) return;
+            const docId = btn.getAttribute('data-id');
+            try {
+                await db.collection("videos").doc(docId).delete();
+                showToast('🗑️ تم حذف الفيديو', 'success');
+                loadVideos();
+            } catch (err) {
+                showToast('❌ حدث خطأ أثناء الحذف: ' + (err.message || ''), 'error');
+            }
+        });
+    });
+}
+
 async function loadVideos() {
     videosContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>جاري التحميل...</p></div>`;
     try {
-        const querySnapshot = await db.collection("videos").get();
+        let querySnapshot;
+        try {
+            querySnapshot = await db.collection("videos").orderBy("createdAt", "desc").get();
+        } catch (orderErr) {
+            console.warn('OrderBy failed, falling back to simple query:', orderErr);
+            querySnapshot = await db.collection("videos").get();
+        }
+
         videosCount.textContent = querySnapshot.size;
 
         if (querySnapshot.empty) {
@@ -235,50 +355,20 @@ async function loadVideos() {
 
         videosContainer.innerHTML = '';
         querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            const id = docSnap.id;
-            const platInfo = platformInfo[data.platform] || platformInfo['other'];
-
-            const item = document.createElement('div');
-            item.className = 'video-item';
-            item.innerHTML = `
-                <div class="video-info">
-                    <img class="video-thumb" src="${data.thumbnailUrl}" alt="${data.title}" onerror="this.src='https://placehold.co/100x60/1a1a2e/7c5cbf?text=No+Image'">
-                    <div class="video-meta">
-                        <h4>${data.title}</h4>
-                        <div class="meta-row">
-                            <span class="cat-badge">${categoriesMap[data.category] || data.category}</span>
-                            <span class="plat-badge" style="font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:20px;background:rgba(0,0,0,0.2);border:1px solid ${platInfo.color}33;color:${platInfo.color}">
-                                <i class="${platInfo.icon}"></i> ${platInfo.label}
-                            </span>
-                        </div>
-                        <div class="video-link">${data.url.length > 55 ? data.url.substring(0, 55) + '...' : data.url}</div>
-                    </div>
-                </div>
-                <button class="delete-btn" data-id="${id}">
-                    <i class="fa-solid fa-trash"></i> حذف
-                </button>
-            `;
+            const item = renderVideoItem(docSnap);
             videosContainer.appendChild(item);
         });
 
-        // Delete events
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                if (!confirm('هل أنت متأكد من حذف هذا الفيديو؟')) return;
-                const docId = btn.getAttribute('data-id');
-                try {
-                    await db.collection("videos").doc(docId).delete();
-                    showToast('🗑️ تم حذف الفيديو', 'success');
-                    loadVideos();
-                } catch (err) {
-                    showToast('❌ حدث خطأ أثناء الحذف', 'error');
-                }
-            });
-        });
+        bindDeleteEvents();
 
     } catch (err) {
-        console.error(err);
-        videosContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>حدث خطأ في جلب البيانات</p></div>`;
+        console.error('Error loading videos:', err);
+        const errorMsg = err.message ? `(${err.message})` : '';
+        videosContainer.innerHTML = `
+            <div class="empty-state">
+                <i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);"></i>
+                <p>حدث خطأ أثناء جلب البيانات من قواعد البيانات</p>
+                <small style="color:var(--danger); opacity:0.8; margin-top:0.5rem; display:block;">${errorMsg}</small>
+            </div>`;
     }
 }
