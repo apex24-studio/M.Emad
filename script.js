@@ -376,3 +376,196 @@ document.addEventListener('keydown', (e) => {
         closeSocialModal();
     }
 });
+
+/* ==========================================================================
+   BEFORE / AFTER AI SLIDER & AI CREATIVE BRIEF GENERATOR LOGIC
+   ========================================================================== */
+
+// --- Before/After AI Visual Slider Logic ---
+const baContainer = document.getElementById('ba-slider');
+const baBefore = document.getElementById('ba-before');
+const baHandle = document.getElementById('ba-handle');
+
+if (baContainer && baBefore && baHandle) {
+    let isDragging = false;
+
+    function setSliderPosition(x) {
+        const rect = baContainer.getBoundingClientRect();
+        let offsetX = x - rect.left;
+        if (offsetX < 0) offsetX = 0;
+        if (offsetX > rect.width) offsetX = rect.width;
+
+        const percentage = (offsetX / rect.width) * 100;
+        baBefore.style.width = percentage + '%';
+        baHandle.style.left = percentage + '%';
+
+        const beforeImg = baBefore.querySelector('img');
+        if (beforeImg) {
+            beforeImg.style.width = rect.width + 'px';
+        }
+    }
+
+    baHandle.addEventListener('mousedown', () => { isDragging = true; });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        setSliderPosition(e.clientX);
+    });
+
+    baHandle.addEventListener('touchstart', () => { isDragging = true; });
+    window.addEventListener('touchend', () => { isDragging = false; });
+    window.addEventListener('touchmove', (e) => {
+        if (!isDragging || !e.touches[0]) return;
+        setSliderPosition(e.touches[0].clientX);
+    });
+
+    baContainer.addEventListener('click', (e) => {
+        setSliderPosition(e.clientX);
+    });
+
+    window.addEventListener('resize', () => {
+        const rect = baContainer.getBoundingClientRect();
+        const beforeImg = baBefore.querySelector('img');
+        if (beforeImg) beforeImg.style.width = rect.width + 'px';
+    });
+}
+
+// --- AI Creative Assistant Brief Generator ---
+const generateBriefBtn = document.getElementById('generate-ai-brief-btn');
+const aiResultBox = document.getElementById('ai-result-box');
+const resultTitle = document.getElementById('result-title');
+const resultHook = document.getElementById('result-hook');
+const resultScript = document.getElementById('result-script');
+const resultFx = document.getElementById('result-fx');
+const sendWhatsappBrief = document.getElementById('send-whatsapp-brief');
+
+const aiTemplates = {
+    restaurant: {
+        name: "مطعم / مأكولات ومشروبات",
+        hooks: [
+            "🔥 سر الطعم اللي كلكوا بتدوروا عليه في مكان واحد!",
+            "🍔 فيديو تشويقي يبدأ بلقطة ماكرو 4K لصوت القرمشة ورشة البهارات!",
+            "✨ لو زرت المكان ده ومشربتش التميز يبقى مخرجتش!"
+        ],
+        scripts: [
+            "افتتاحية سريعة (0-3 ثواني): لقطات تجميعية سريعة بالـ Speed Ramping لأهم الأطباق. ثم انتقالة ذكية لعرض المطبخ والتقديم الاحترافي، واختتام بدعوة للتجربة مع الموقع والأرقام.",
+            "استعراض قصصي من البداية لطهي الطبق الرئيسي، التركيز على التفاصيل والدخان والألوان المشبعة الزاهية."
+        ],
+        fx: [
+            "تأثيرات CapCut Pro AI Color Grading المشبعة بالألوان الدافئة + نصوص ديناميكية Auto Captions بإيموجي الطعام + زوم سريع وSpeed Ramping متناغم مع الإيقاع.",
+            "مؤثرات صوتية حية (Sfx) لصوت الشواء، القرمشة، والموسيقى الحماسية."
+        ]
+    },
+    clinic: {
+        name: "عيادة طبية / مركز تجميل",
+        hooks: [
+            "💎 ابتسامتك هي عنوان ثقتك.. انظر الفرق بعد الجلسة الأولى!",
+            "✨ سر البشرة المشرقة الجذابة في 30 ثانية بس!",
+            "🏥 تجربة علاجية وسينمائية مختلفة تماماً في أفضل مركز متخصص."
+        ],
+        scripts: [
+            "مشهد افتتاحي هادئ وفخم للعيادة، انتقال للحديث السريع للطبيب أو الحالة قبل وبعد المعالجة، مع إبراز التقنيات والأجهزة الحديثة بشكل مشوق وموثوق.",
+            "استعراض حالة حقيقية (Before & After) مع ترجمة تلقائية ملونة ونصوص توضيحية لخطوات العلاج."
+        ],
+        fx: [
+            "إخراج لوني ناصع وبارد (Clean Medical Teal & White Grade) + نصوص توضيحية ثلاثية الأبعاد خفيفة + CapCut Auto Captions أنيقة ومريحة للعين."
+        ]
+    },
+    cafe: {
+        name: "كافيه / محمصة قهوة",
+        hooks: [
+            "☕ ريحة القهوة هنا مش مجرد مشروب.. دي تجربة تعدل مزاجك!",
+            "✨ أول ريلز سينمائي يخليك تشم ريحة البن من ورا الشاشة!",
+            "🥐 المكان الأروق لقضاء وقتك والمذاكرة أو الشغل."
+        ],
+        scripts: [
+            "لقطة سلو موشن (Slow-Motion) لصب القهوة والـ Espresso Drop مع صوت التقطير الحقيقي، ثم استعراض الديكور المريح والأجواء الجذابة واختتام باللوجو.",
+            "جولة سريعة وممتعة بالـ CapCut Speed Ramping بين تفاصيل المكان وأفضل الوجبات الخفيفة والقهوة المختصة."
+        ],
+        fx: [
+            "تدرجات لونية سينمائية دافئة (Vintage Warm Mood) + تأثيرات صوتية عالية الدقة لصوت القهوة + نصوص كابشن متحركة مع حركة الكاميرا."
+        ]
+    },
+    realestate: {
+        name: "عقارات / تصميم داخلي",
+        hooks: [
+            "🏰 شقة أحلامك في أرقى موقع وبإطلالة ساحرة.. شاهد التفاصيل!",
+            "🔑 تصميم داخلي يحول مساحتك إلى تحفة فنية معاصرة!",
+            "✨ الفرصة الاستثمارية الأقوى لهذا العام."
+        ],
+        scripts: [
+            "جولة سينمائية واسعة (Wide Cinematic Shot) تنتقل بسلاسة بين الغرف والصالة والمطبخ مع تسريع ذكي وإبراز مساحات الإضاءة الطبيعية والأثاث الفاخر.",
+            "استعراض التصميم الداخلي قبل وبعد التشطيب بتقنيات الانتقال السريع في CapCut Pro."
+        ],
+        fx: [
+            "تثبيت وتنعيم حركة الكاميرا (AI Stabilization) + تباين ألوان فخم + أرقام ومميزات ثلاثية الأبعاد تظهر على الحوائط تلقائياً (AI 3D Text Tracking)."
+        ]
+    },
+    ecommerce: {
+        name: "متجر إلكتروني / منتجات",
+        hooks: [
+            "🛍️ المنتج اللي مكسر تيك توك ووصل أخيرًا بخصم خاص!",
+            "📦 فتح صندوق المنتجات الأكثر طلباً في 2026!",
+            "🔥 ليه المنتج ده لازم يكون عندك النهاردة؟"
+        ],
+        scripts: [
+            "افتتاحية خطفة (Unboxing Hook) في أول 2 ثانية، إبراز طريقة الاستخدام، استعراض المزايا والحلول التي يقدمها المنتج، ثم Call to Action قوي للشراء مع الخصم.",
+            "مراجعة سريعة للمنتج بتأثيرات البوب أب والتكبير والتصغير الديناميكي."
+        ],
+        fx: [
+            "تفريغ وعزل خلفيات المنتجات بالـ CapCut AI Cutout + ملصقات وأسهم متحركة تفاعلية + نصوص ديناميكية ملونة مع أسعار وعروض خصم حماسية."
+        ]
+    },
+    personal: {
+        name: "صانع محتوى / شخصي",
+        hooks: [
+            "💡 معلومة في 60 ثانية هتغير طريقة تفكيرك تماماً!",
+            "🚀 الخطأ القاتل اللي بيقع فيه أغلب الناس وكيف تتجنبه؟",
+            "🎬 كيف تصنع محتوى فيروسي وتحقق انتشار واسع بأسهل طريقة؟"
+        ],
+        scripts: [
+            "تحدث مباشر للجمهور (Talking Head) محاط بقِصّات سريعة جداً بدون فترات صمت، تزويد الفيديوهات بصور ومقاطع توضيحية (B-Roll) تتغير كل 2-3 ثواني لمنع التشتت.",
+            "قصة شخصية مشوقة تبدأ بسؤال غريب وتستعرض الحل في النهاية."
+        ],
+        fx: [
+            "CapCut AI Auto Captions مع إبراز الكلمات الهامة بالأصفر والأخضر + زوم إن وزوم أوت تلقائي في نقاط التوكيد + مؤثرات صوتية (Pop, Woosh, Click) عند ظهور كل عنصر."
+        ]
+    }
+};
+
+if (generateBriefBtn && aiResultBox) {
+    generateBriefBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const bizType = document.getElementById('ai-business-type').value;
+        const platform = document.getElementById('ai-platform').options[document.getElementById('ai-platform').selectedIndex].text;
+        const tone = document.getElementById('ai-tone').options[document.getElementById('ai-tone').selectedIndex].text;
+        
+        const template = aiTemplates[bizType] || aiTemplates.restaurant;
+        
+        const hookChoice = template.hooks[Math.floor(Math.random() * template.hooks.length)];
+        const scriptChoice = template.scripts[Math.floor(Math.random() * template.scripts.length)];
+        const fxChoice = template.fx[Math.floor(Math.random() * template.fx.length)];
+        
+        resultTitle.textContent = `مقترح فيديو: ${template.name}`;
+        resultHook.textContent = hookChoice;
+        resultScript.textContent = scriptChoice;
+        resultFx.textContent = fxChoice;
+        
+        const message = `أهلاً أ/ محمد عماد، قمت بتوليد brief فيديو من خلال المساعد الذكي بموقعك:\n\n` +
+            `📌 *مجال النشاط:* ${template.name}\n` +
+            `📱 *المنصة:* ${platform}\n` +
+            `🎵 *الطابع والموسيقى:* ${tone}\n\n` +
+            `💡 *فكرة الخطفة (Hook):* ${hookChoice}\n` +
+            `🎬 *السيناريو المقترح:* ${scriptChoice}\n` +
+            `✂️ *مؤثرات CapCut AI:* ${fxChoice}\n\n` +
+            `حابب نشتغل على الفكرة دي وأعرف التفاصيل والتكلفة!`;
+            
+        const encodedMessage = encodeURIComponent(message);
+        sendWhatsappBrief.href = `https://wa.me/201001376298?text=${encodedMessage}`;
+        
+        aiResultBox.classList.remove('hidden');
+        aiResultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+}
+
