@@ -282,7 +282,7 @@ addVideoForm.addEventListener('submit', async (e) => {
 });
 
 // ===== Load Videos =====
-const categoriesMap = { 'capcut-ai': 'CapCut & AI ✦', restaurants: 'مطاعم', clinics: 'عيادات طبية', cafes: 'كافيهات', other: 'أخرى' };
+const categoriesMap = { 'capcut-ai': 'CapCut Pro ✦', restaurants: 'مطاعم', clinics: 'عيادات طبية', cafes: 'كافيهات', other: 'أخرى' };
 
 function renderVideoItem(docSnap) {
     const data = docSnap.data() || {};
