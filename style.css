@@ -953,7 +953,7 @@ header {
     .hero-subtitle { margin: 0 auto 50px; }
     .hero-actions { justify-content: center; }
     .hero-title { font-size: 4rem; }
-    .hero-visual { max-width: 600px; margin: 0 auto; }
+    .hero-visual { order: -1; max-width: 600px; margin: 0 auto; }
 }
 
 /* ========================================
