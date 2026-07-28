@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohamed Emad | Cinematic Video Editor</title>
-    <meta name="description" content="البورتفوليو الخاص بمحمد عماد - صانع قصص بصرية ومحرر فيديوهات سينمائية.">
+    <title>Mohamed Emad | Cinematic Video Editor & Content Creator</title>
+    <meta name="description" content="البورتفوليو الفاخر لمحمد عماد - محرر فيديوهات سينمائية وصانع محتوى فيروسي باحترافية وخبرة متميزة.">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +14,10 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Locomotive Scroll CSS (Simulated via regular CSS for now) -->
+    <!-- Master CSS -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- Critical: Hide custom cursor on touch/mobile devices immediately -->
+    <!-- Hide custom cursor on mobile -->
     <style>
         @media (hover: none), (pointer: coarse), (max-width: 1024px) {
             #cursor, #cursor-blur, .cursor, .cursor-blur {
@@ -35,7 +35,7 @@
     <!-- Preloader -->
     <div class="preloader">
         <div class="loader-content">
-            <div class="logo-loader">M<span>.</span>E</div>
+            <div class="logo-loader">M<span>.</span>EMAD <span class="loader-ai">PORTFOLIO ✦</span></div>
             <div class="progress-bar"><div class="progress"></div></div>
         </div>
     </div>
@@ -45,18 +45,38 @@
     <div class="cursor-blur" id="cursor-blur"></div>
 
     <!-- Header / Nav -->
-    <header>
-                </div>
+    <header class="main-header">
+        <div class="container nav-container">
+            <a href="#hero" class="logo">
+                <span class="logo-text">M<span>.</span>EMAD</span>
+                <span class="ai-badge-header"><i class="fa-solid fa-clapperboard"></i> CINEMATIC 2026</span>
+            </a>
+            <nav class="desktop-nav">
+                <a href="#hero" class="nav-item active">الرئيسية</a>
+                <a href="#services" class="nav-item">الخدمات</a>
+                <a href="#ai-script-generator" class="nav-item ai-nav-item">
+                    <span>مولد السكربتات AI</span>
+                    <span class="badge-sparkle">أداة تفاعلية</span>
+                </a>
+                <a href="#ai-calculator" class="nav-item">حاسبة التكلفة</a>
+                <a href="#work" class="nav-item">معرض الأعمال</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#contact" class="nav-cta-btn magnetic">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>تواصل معي</span>
+                </a>
+                <button class="menu-toggle" aria-label="القائمة"><i class="fa-solid fa-bars"></i></button>
             </div>
-        </nav>
+        </div>
     </header>
 
     <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav-overlay" id="mobile-nav">
         <a href="#hero" class="mobile-nav-link">الرئيسية</a>
         <a href="#services" class="mobile-nav-link">الخدمات</a>
-
-
+        <a href="#ai-script-generator" class="mobile-nav-link highlight-ai">مولد السكربتات AI ✦</a>
+        <a href="#ai-calculator" class="mobile-nav-link">حاسبة التكلفة</a>
         <a href="#work" class="mobile-nav-link">معرض الأعمال</a>
         <a href="#contact" class="mobile-nav-link contact-pill">تكلم معي</a>
     </div>
@@ -68,77 +88,70 @@
             <div class="animated-grid"></div>
             <div class="ambient-orb orb-1"></div>
             <div class="ambient-orb orb-2"></div>
+            <div class="ambient-orb orb-3"></div>
 
-            
             <div class="container hero-container">
                 <div class="hero-layout">
                     <div class="hero-content">
                         <div class="hero-badge">
-                            <span class="badge-dot pulse-green"></span> ✦ خبير المونتاج | CapCut Pro Specialist
+                            <span class="badge-dot pulse-purple"></span> ✦ صناعة ومونتاج سينمائي احترافي | CapCut Pro Specialist
                         </div>
                         <h1 class="hero-title">
-                            <span class="line">نصنع</span>
-                            <span class="line-gradient">محتوى فيروسي</span>
-
+                            <span class="line">نحوّل أفكارك إلى</span>
+                            <span class="line-gradient">محتوى سينمائي فيروسي</span>
                         </h1>
                         <p class="hero-subtitle">
-                            متمكن في هندسة الفيديوهات باستخدام <strong>CapCut Pro</strong>. أحول لقطاتك العادية إلى فيديوهات سينمائية عالية التفاعل (Viral Reels & Shorts)، مع كابشنز ديناميكية، مؤثرات بصري ذكية، وجودة بصرية تتصدر المنصات.
+                            أصنع محتواك بلمسة **سينمائية احترافية وخبرة بشرية ممتدة**. أحول لقطاتك العادية إلى فيديوهات سينمائية عالية التفاعل (Viral Reels & Shorts)، مع كابشنز ديناميكية، تصحيح ألوان دقيق، وهندسة صوتية فائقة الجودة. ونوفر لك أدوات ذكية في الموقع لتوليد السكربتات وحساب تكلفة مشروعك فوراً!
                         </p>
                         <div class="hero-actions">
-                            <a href="#work" class="main-cta">
-                                <span>شاهد أعمالي</span>
+                            <a href="#ai-script-generator" class="main-cta glowing-cta magnetic">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>ولد سكربتك بالذكاء الاصطناعي مجاناً</span>
+                            </a>
+                            <a href="#work" class="secondary-cta magnetic">
+                                <span>مشاهدة الأعمال</span>
                                 <i class="fa-solid fa-arrow-left"></i>
                             </a>
-                            <a href="#contact" class="secondary-cta">
-                                <span>تواصل معي</span>
-                            </a>
-                            <div class="scroll-hint">
-                                <div class="mouse-icon"></div>
-                                <span>مرر للإبهار</span>
-                            </div>
                         </div>
                     </div>
 
                     <div class="hero-visual">
                         <div class="experience-card glass">
                             <span class="number">04+</span>
-                            <span class="label">سنوات خبرة</span>
+                            <span class="label">سنوات خبرة إبداعية</span>
                         </div>
                         <div class="main-frame">
                             <div class="frame-content">
-                                <!-- Mohamed's Photo -->
                                 <div class="img-overlay"></div>
                                 <img src="assets/mohamed.png" alt="Mohamed Emad" class="user-hero-img">
                             </div>
-                            <!-- Floating Elements -->
-                            <div class="tool-icon tool-1"><i class="fa-solid fa-scissors"></i></div>
-                            <div class="tool-icon tool-2"><i class="fa-solid fa-bolt-lightning"></i></div>
-                            <div class="tool-icon tool-3"><i class="fa-solid fa-clapperboard"></i></div>
-                            <div class="tool-icon tool-4"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <!-- Floating Tech Icons -->
+                            <div class="tool-icon tool-1" title="CapCut Pro Specialist"><i class="fa-solid fa-scissors"></i></div>
+                            <div class="tool-icon tool-2" title="Dynamic Effects & Ramping"><i class="fa-solid fa-bolt-lightning"></i></div>
+                            <div class="tool-icon tool-3" title="Cinematic Color Grading"><i class="fa-solid fa-clapperboard"></i></div>
+                            <div class="tool-icon tool-4" title="Dynamic Captions & Subtitles"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Stats Strip -->
+        <!-- Stats Ticker Strip -->
         <section class="stats-strip">
             <div class="ticker">
-                <span>CAPCUT PRO ✦</span>
+                <span>AI VIRAL HOOK GENERATOR ✦</span>
                 <span class="dot"></span>
-                <span>DYNAMIC CAPTIONS & TEXT EFFECTS</span>
+                <span>CAPCUT PRO CINEMATIC MASTERING</span>
                 <span class="dot"></span>
-                <span>ADOBE PREMIERE PRO</span>
-                <span class="dot"></span>
-                <span>AFTER EFFECTS</span>
-                <span class="dot"></span>
-                <span>DAVINCI RESOLVE COLOR GRADING</span>
+                <span>DYNAMIC CAPTIONS & ANIMATION</span>
                 <span class="dot"></span>
                 <span>CINEMATIC COLOR GRADING</span>
                 <span class="dot"></span>
-                <span>VFX & VISUAL EFFECTS</span>
+                <span>PROFESSIONAL AUDIO CLEANING</span>
                 <span class="dot"></span>
-                <span>SPEED RAMPING & REELS</span>
+                <span>HIGH RETENTION REELS & SHORTS</span>
+                <span class="dot"></span>
+                <span>ADOBE PREMIERE PRO & AFTER EFFECTS</span>
             </div>
         </section>
 
@@ -148,17 +161,17 @@
                 <div class="facts-grid">
                     <div class="fact-card glass">
                         <div class="fact-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <h3>المهارة</h3>
-                        <p>مونتاج سينمائي، كابشنز ديناميكية، تصحيح ألوان ومؤثرات بصرية لإنشاء محتوى عالي التفاعل.</p>
+                        <h3>الخبرة الإبداعية والمونتاج السينمائي</h3>
+                        <p>مونتاج احترافي بلمسة بشرية إبداعية، كابشنز تفاعلية، تصحيح ألوان ومؤثرات بصريّة تصدر المنصات.</p>
                     </div>
                     <div class="fact-card glass">
-                        <div class="fact-icon"><i class="fa-solid fa-business-time"></i></div>
-                        <h3>سنوات الخبرة</h3>
-                        <p>أكثر من 4 سنوات من الخبرة الاحترافية في صناعة وتعديل محتوى الفيديو لمنصات التواصل الاجتماعي.</p>
+                        <div class="fact-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <h3>سرعة فائقة ودقة متناهية</h3>
+                        <p>تسليم الفيديوهات في أسرع وقت مع الاعتماد على أفضل مهارات المونتاج للحصول على أعلى نسبة مشاهدة (Retention Rate).</p>
                     </div>
                     <div class="fact-card glass">
                         <div class="fact-icon"><i class="fa-solid fa-laptop-code"></i></div>
-                        <h3>البرامج المستخدمة</h3>
+                        <h3>البرامج الاحترافية</h3>
                         <p>CapCut Pro, Adobe Premiere Pro, After Effects, DaVinci Resolve.</p>
                     </div>
                 </div>
@@ -170,7 +183,7 @@
             <div class="container">
                 <div class="section-title-area">
                     <h2 class="title-bg">SERVICES</h2>
-                    <h3 class="title-top">خدمات المونتاج</h3>
+                    <h3 class="title-top">خدمات المونتاج السينمائي</h3>
                 </div>
                 <div class="services-grid">
                     <div class="service-card glass">
@@ -187,9 +200,183 @@
             </div>
         </section>
 
+        <!-- ==================== AI FEATURE 1: AI SCRIPT & HOOK GENERATOR (INTERACTIVE SITE TOOL) ==================== -->
+        <section id="ai-script-generator" class="ai-section script-section">
+            <div class="container">
+                <div class="section-title-area">
+                    <h2 class="title-bg">AI SCRIPT</h2>
+                    <h3 class="title-top">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> مولد السكربتات والخطافات الفيروسية (أداة تفاعلية للموقع)
+                    </h3>
+                    <p class="section-subtitle">أداة ذكية يتيحها لك الموقع: اختر مجال مشروعك وسيولّد لك الذكاء الاصطناعي خطافاً خاطفاً وسيناريو مشهدي متكامل لتبدأ العمل معنا فوراً!</p>
+                </div>
 
+                <div class="ai-generator-card glass">
+                    <div class="generator-controls">
+                        <!-- Niche Selection -->
+                        <div class="form-group-ai">
+                            <label><i class="fa-solid fa-store"></i> اختر مجال الفيديو:</label>
+                            <div class="niche-chips" id="niche-selector">
+                                <button type="button" class="niche-chip active" data-niche="restaurants">🍔 مطاعم وكافيهات</button>
+                                <button type="button" class="niche-chip" data-niche="clinics">🩺 عيادات وتجميل</button>
+                                <button type="button" class="niche-chip" data-niche="ecommerce">🛒 متجر إلكتروني</button>
+                                <button type="button" class="niche-chip" data-niche="podcast">🎙️ بودكاست ومحتوى</button>
+                                <button type="button" class="niche-chip" data-niche="personal">💼 شخصي وخدمات</button>
+                            </div>
+                        </div>
 
+                        <!-- Tone Selection -->
+                        <div class="form-row-ai">
+                            <div class="form-group-ai">
+                                <label><i class="fa-solid fa-masks-theater"></i> نبرة الفيديو (Tone):</label>
+                                <select id="ai-tone-select" class="ai-select">
+                                    <option value="viral">🔥 حماسي وخاطف (Viral Hook)</option>
+                                    <option value="cinematic">🎬 سينمائي وفاخر (Luxury & Cinematic)</option>
+                                    <option value="educational">💡 تعليمي ومبسط (Educational & Value)</option>
+                                    <option value="funny">😂 كوميدي وتفاعلي (Funny & Engaging)</option>
+                                </select>
+                            </div>
 
+                            <div class="form-group-ai">
+                                <label><i class="fa-solid fa-stopwatch"></i> مدة الفيديو:</label>
+                                <select id="ai-duration-select" class="ai-select">
+                                    <option value="15">15 ثانية (Reels / TikTok Short)</option>
+                                    <option value="30" selected>30 ثانية (Standard Reel)</option>
+                                    <option value="60">60 ثانية (Detailed Story / In-depth)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Custom Prompt Topic -->
+                        <div class="form-group-ai">
+                            <label><i class="fa-solid fa-lightbulb"></i> فكرة الفيديو أو المنتج (اختياري):</label>
+                            <input type="text" id="ai-topic-input" class="ai-input" placeholder="مثال: خصم 20% على الوجبات الرئيسية، أو فتح عيادة جديدة...">
+                        </div>
+
+                        <!-- Action Button -->
+                        <button type="button" id="generate-script-btn" class="cyber-btn glowing-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>توليد السكربت والخطاف الفيروسي الآن</span>
+                        </button>
+                    </div>
+
+                    <!-- Output Preview Container -->
+                    <div class="generator-output" id="script-output-container" style="display: none;">
+                        <div class="output-header">
+                            <h4><i class="fa-solid fa-microchip"></i> نتائج الذكاء الاصطناعي (AI Generated Script)</h4>
+                            <span class="ai-badge-sm">جاهز للتنفيذ ✦</span>
+                        </div>
+
+                        <div class="script-content-box" id="script-result-content">
+                            <!-- Dynamic Content Inserted via JS -->
+                        </div>
+
+                        <div class="output-actions">
+                            <button type="button" id="copy-script-btn" class="action-btn outline">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>نسخ السكربت</span>
+                            </button>
+                            <button type="button" id="whatsapp-script-btn" class="action-btn whatsapp">
+                                <i class="fa-brands fa-whatsapp"></i>
+                                <span>إرسال السكربت لمحمد عماد لبدء المونتاج</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== AI FEATURE 3: AI SMART COST CALCULATOR ==================== -->
+        <section id="ai-calculator" class="ai-section calculator-section">
+            <div class="container">
+                <div class="section-title-area">
+                    <h2 class="title-bg">CALCULATOR</h2>
+                    <h3 class="title-top">
+                        <i class="fa-solid fa-calculator"></i> حاسبة التكلفة والوقت الذكية (Smart Estimator)
+                    </h3>
+                    <p class="section-subtitle">احسب التكلفة والمدّة التقديرية لمشروعك فوراً وبكل شفافية</p>
+                </div>
+
+                <div class="calculator-grid">
+                    <div class="calc-controls-card glass">
+                        <!-- Number of Videos -->
+                        <div class="calc-group">
+                            <div class="calc-label-row">
+                                <span><i class="fa-solid fa-video"></i> عدد الفيديوهات:</span>
+                                <strong id="video-count-val" class="calc-val">3 فيديوهات</strong>
+                            </div>
+                            <input type="range" id="video-count-range" min="1" max="15" value="3" class="calc-range">
+                        </div>
+
+                        <!-- Video Length -->
+                        <div class="calc-group">
+                            <div class="calc-label-row">
+                                <span><i class="fa-solid fa-clock"></i> مدة الفيديو الواحد:</span>
+                                <strong id="video-len-val" class="calc-val">30 ثانية</strong>
+                            </div>
+                            <input type="range" id="video-len-range" min="15" max="180" step="15" value="30" class="calc-range">
+                        </div>
+
+                        <!-- Additional Enhancements -->
+                        <div class="calc-group">
+                            <label class="calc-section-label">الميزات والتأثيرات المطلوبة:</label>
+                            <div class="checkbox-options">
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="chk-captions" checked>
+                                    <span class="checkmark"></span>
+                                    <span>كابشنز وتسميات ديناميكية احترافية</span>
+                                </label>
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="chk-color" checked>
+                                    <span class="checkmark"></span>
+                                    <span>تصحيح وتدرّج ألوان سينمائي</span>
+                                </label>
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="chk-audio" checked>
+                                    <span class="checkmark"></span>
+                                    <span>هندسة وتنقية الصوت الاحترافية</span>
+                                </label>
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="chk-express">
+                                    <span class="checkmark"></span>
+                                    <span>تسليم سريع استثنائي (خلال 24 ساعة)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estimate Summary Card -->
+                    <div class="calc-summary-card glass glowing-border">
+                        <div class="summary-header">
+                            <h4><i class="fa-solid fa-receipt"></i> التقدير الذكي للمشروع</h4>
+                            <span class="summary-status">حساب فوري ✦</span>
+                        </div>
+
+                        <div class="summary-metrics">
+                            <div class="metric-box">
+                                <span class="metric-title">التكلفة التقديرية</span>
+                                <span class="metric-price" id="calc-total-price">---$</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-title">مدة التنفيذ التقديرية</span>
+                                <span class="metric-time" id="calc-delivery-time">24-48 ساعة</span>
+                            </div>
+                        </div>
+
+                        <ul class="summary-features" id="calc-features-list">
+                            <li><i class="fa-solid fa-check"></i> جودة سينمائية 4K عالية الدقة</li>
+                            <li><i class="fa-solid fa-check"></i> تعديلات مجانية متضمنة</li>
+                            <li><i class="fa-solid fa-check"></i> صيغة مهيأة للريلز والتيك توك</li>
+                        </ul>
+
+                        <a href="https://wa.me/201001376298" target="_blank" id="calc-whatsapp-btn" class="cyber-btn whatsapp-action">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span>اطلب هذا العرض فوراً عبر الواتساب</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Showcase Section -->
         <section id="work" class="work-section">
@@ -216,7 +403,7 @@
                             <div class="card-overlay">
                                 <div class="card-meta">
                                     <span class="category">مطاعم</span>
-                                    <h4 class="project-title">إعلان مطعم مأكولات بحرية</h4>
+                                    <h4 class="project-title">إعلان مطعم مأكولات بحرية سينمائي</h4>
                                 </div>
                                 <div class="view-btn">
                                     <i class="fa-solid fa-play"></i>
@@ -248,7 +435,7 @@
                             <div class="card-overlay">
                                 <div class="card-meta">
                                     <span class="category">كافيهات</span>
-                                    <h4 class="project-title">تغطية افتتاح كافيه</h4>
+                                    <h4 class="project-title">تغطية افتتاح كافيه فخم</h4>
                                 </div>
                                 <div class="view-btn">
                                     <i class="fa-solid fa-play"></i>
@@ -256,10 +443,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="more-works">
-                    <a href="#" class="outline-btn">شاهد المزيد على بيهانس</a>
                 </div>
             </div>
         </section>
@@ -270,7 +453,7 @@
                 <div class="contact-card glass">
                     <div class="contact-text">
                         <h2>هل أنت مستعد لنقل محتواك إلى المستوى التالي؟</h2>
-                        <p>الفيديو القادم ليس مجرد مشروع، بل هو بصمة ستبقى. دعنا نصنعها سوياً.</p>
+                        <p>الفيديو القادم ليس مجرد مشروع، بل هو بصمة ستبقى. دعنا نصنعها سوياً باستخدام أفضل تقنيات وخبرات المونتاج السينمائي الاحترافي.</p>
                         <div class="contact-links">
                             <div class="social-pills">
                                 <a href="https://wa.me/201001376298" class="whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
@@ -290,13 +473,56 @@
 
     <footer class="main-footer">
         <div class="container footer-content">
-            <p>© 2024 محمد عماد - كل الحقوق محفوظة</p>
+            <p>© 2026 محمد عماد - صانع الفيديوهات السينمائية وصانع المحتوى</p>
             <div class="footer-links">
                 <a href="#">سياسة الخصوصية</a>
                 <a href="#">الشروط والأحكام</a>
             </div>
         </div>
     </footer>
+
+    <!-- ==================== FLOATING AI ASSISTANT BOT WIDGET ==================== -->
+    <div id="ai-assistant-widget" class="ai-widget-container">
+        <!-- Floating Trigger Button -->
+        <button id="ai-bot-toggle-btn" class="ai-bot-fab" title="مساعد الموقع التفاعلي">
+            <i class="fa-solid fa-headset"></i>
+            <span class="online-dot"></span>
+        </button>
+
+        <!-- Chat Modal Container -->
+        <div id="ai-chat-window" class="ai-chat-window" style="display: none;">
+            <div class="chat-header">
+                <div class="bot-info">
+                    <div class="bot-avatar"><i class="fa-solid fa-headset"></i></div>
+                    <div>
+                        <h4>M.EMAD Website Assistant ✦</h4>
+                        <span class="bot-status"><span class="green-dot"></span> متصل الآن للمساعدة</span>
+                    </div>
+                </div>
+                <button id="ai-chat-close" class="chat-close-btn">&times;</button>
+            </div>
+
+            <div class="chat-body" id="chat-messages-container">
+                <div class="chat-message bot">
+                    <div class="message-bubble">
+                        أهلاً بك! 👋 أنا **مساعد الموقع الخاص بمحمد عماد**. كيف يمكنني مساعدتك اليوم في الاستفسار عن الخدمات أو توليد سكربت لمشروعك؟
+                    </div>
+                </div>
+                
+                <!-- Quick Preset Prompts -->
+                <div class="quick-prompts-row" id="quick-prompts">
+                    <button class="quick-prompt-btn" data-msg="ما هي خطوات بدء مشروع المونتاج؟">💡 كيف نبدأ العمل؟</button>
+                    <button class="quick-prompt-btn" data-msg="ما هي أسعار المونتاج والخدمات؟">💰 أسعار الخدمات</button>
+                    <button class="quick-prompt-btn" data-msg="كيف أستخدم مولد السكربتات الذكي؟">🪄 مولد السكربتات</button>
+                </div>
+            </div>
+
+            <div class="chat-footer">
+                <input type="text" id="chat-user-input" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+                <button id="chat-send-btn" class="chat-send"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
 
     <!-- Social Contact Modal -->
     <div id="social-modal" class="social-modal-overlay">
