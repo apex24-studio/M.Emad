@@ -40,7 +40,6 @@
 
             <nav class="desktop-nav">
                 <a href="#hero" class="nav-pill-link active">الرئيسية</a>
-                <a href="#services" class="nav-pill-link">الخدمات</a>
                 <a href="#work" class="nav-pill-link">المشاريع</a>
             </nav>
 
@@ -62,7 +61,6 @@
         <div class="mobile-nav-inner">
             <span class="mobile-nav-label">NAVIGATION</span>
             <a href="#hero" class="mobile-nav-link">الرئيسية <span class="arrow">↗</span></a>
-            <a href="#services" class="mobile-nav-link">الخدمات <span class="arrow">↗</span></a>
             <a href="#work" class="mobile-nav-link">معرض الأعمال <span class="arrow">↗</span></a>
             <a href="#contact" class="mobile-nav-link contact-pill-mobile">تواصل معي الآن <span class="arrow">↗</span></a>
         </div>
@@ -191,42 +189,12 @@
             </div>
         </section>
 
-        <!-- ==================== SERVICES SECTION ==================== -->
-        <section id="services" class="services-section">
-            <div class="content-container">
-                <div class="section-headline-block">
-                    <span class="section-num">02 / SERVICES</span>
-                    <h2 class="section-headline">CRAFTED FOR IMPACT</h2>
-                    <p class="section-desc">خدمات مصممة لصناع المحتوى والبراندات الطامحة للتميز والانتشار الرقمي.</p>
-                </div>
-
-                <div class="services-editorial-grid">
-                    <div class="service-editorial-card graphite-card">
-                        <div class="service-header">
-                            <span class="service-pill-tag">CAPCUT PRO</span>
-                            <span class="service-arrow">↗</span>
-                        </div>
-                        <h3>مونتاج CapCut Pro السريع والفيروسي</h3>
-                        <p>صناعة ريلز وتيك توك سريعة الإيقاع مع قِصّات احترافية، تسريع وتثبيت زوايا الكاميرا (Speed Ramping) وتأثيرات تتناسب مع أحدث ترندات المنصات العالمية.</p>
-                    </div>
-
-                    <div class="service-editorial-card graphite-card">
-                        <div class="service-header">
-                            <span class="service-pill-tag">DYNAMIC MOTION</span>
-                            <span class="service-arrow">↗</span>
-                        </div>
-                        <h3>الكابشنز والتأثيرات البصرية الحركية</h3>
-                        <p>إضافة التسميات التوضيحية الديناميكية (Dynamic Captions) بالألوان والأيموجي والأنيميشن التفاعلي الذي يرفع مدة بقاء المشاهد وتفاعله فوراً.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- ==================== SELECTED WORKS SECTION ==================== -->
         <section id="work" class="work-section">
             <div class="content-container">
                 <div class="section-headline-block">
-                    <span class="section-num">03 / PORTFOLIO</span>
+                    <span class="section-num">02 / PORTFOLIO</span>
                     <h2 class="section-headline">SELECTED WORKS</h2>
                     <p class="section-desc">مشاريع وفيديوهات صنعت خصيصاً لتحقيق أعلى نسب المشاهدة والتفاعل.</p>
                 </div>
@@ -296,7 +264,7 @@
         <section id="contact" class="contact-section">
             <div class="content-container">
                 <div class="contact-editorial-card">
-                    <span class="section-num">04 / GET IN TOUCH</span>
+                    <span class="section-num">03 / GET IN TOUCH</span>
                     <h2 class="contact-big-headline">LET'S WORK<br>TOGETHER</h2>
                     <p class="contact-desc">
                         مشروعك القادم ليس مجرد فيديو، بل قصة وبصمة تدوم. تواصل معي مباشرة لنبدأ العمل على فكرتك ونحولها لتحفة بصرية.
@@ -341,47 +309,7 @@
         </div>
     </footer>
 
-    <!-- ==================== FLOATING ASSISTANT WIDGET ==================== -->
-    <div id="ai-assistant-widget" class="ai-widget-container">
-        <!-- Floating Trigger Button (Minimal Pill / Circle) -->
-        <button id="ai-bot-toggle-btn" class="ai-bot-fab magnetic" title="مساعد الموقع التفاعلي">
-            <i class="fa-solid fa-comment-dots"></i>
-            <span class="online-dot"></span>
-        </button>
 
-        <!-- Chat Window -->
-        <div id="ai-chat-window" class="ai-chat-window" style="display: none;">
-            <div class="chat-header">
-                <div class="bot-info">
-                    <div class="bot-avatar"><i class="fa-solid fa-headset"></i></div>
-                    <div>
-                        <h4>M.EMAD Editorial Assistant</h4>
-                        <span class="bot-status"><span class="green-dot"></span> متصل الآن للمساعدة</span>
-                    </div>
-                </div>
-                <button id="ai-chat-close" class="chat-close-btn">&times;</button>
-            </div>
-
-            <div class="chat-body" id="chat-messages-container">
-                <div class="chat-message bot">
-                    <div class="message-bubble">
-                        أهلاً بك! 👋 أنا مساعد موقع محمد عماد. كيف يمكنني مساعدتك اليوم في الاستفسار عن تفاصيل خدمات المونتاج وبدء مشروعك القادم؟
-                    </div>
-                </div>
-                
-                <div class="quick-prompts-row" id="quick-prompts">
-                    <button class="quick-prompt-btn" data-msg="ما هي خطوات بدء مشروع المونتاج؟">💡 كيف نبدأ؟</button>
-                    <button class="quick-prompt-btn" data-msg="ما هي أسعار المونتاج والخدمات؟">💰 أسعار الخدمات</button>
-                    <button class="quick-prompt-btn" data-msg="ما هي البرامج المستخدمة في المونتاج؟">🎬 برامج المونتاج</button>
-                </div>
-            </div>
-
-            <div class="chat-footer">
-                <input type="text" id="chat-user-input" placeholder="اكتب استفسارك هنا..." autocomplete="off">
-                <button id="chat-send-btn" class="chat-send"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
 
     <!-- Social Contact Modal -->
     <div id="social-modal" class="social-modal-overlay">
