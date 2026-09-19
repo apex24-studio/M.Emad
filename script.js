@@ -119,16 +119,16 @@ if (!isTouchDevice) {
         });
     });
 
-    // --- Interaction Hover Effects ---
-    const hoverables = document.querySelectorAll('a, button, .work-card, .nav-item');
+    // --- Interaction Hover Effects (Dennis Snellenberg Cursor Hover) ---
+    const hoverables = document.querySelectorAll('a, button, .work-card, .nav-pill-link, .pill-btn, .niche-chip, .location-pill-badge, .editorial-chip, .filter-btn, .social-inset-pill, .smi-link');
     hoverables.forEach(item => {
         item.addEventListener('mouseenter', () => {
             if (!cursor) return;
-            cursor.style.width = '40px';
-            cursor.style.height = '40px';
-            cursor.style.background = 'rgba(255,255,255,0.1)';
-            cursor.style.backdropFilter = 'blur(2px)';
-            cursor.style.border = '1px solid white';
+            cursor.style.width = '44px';
+            cursor.style.height = '44px';
+            cursor.style.background = 'rgba(255, 255, 255, 0.12)';
+            cursor.style.backdropFilter = 'blur(4px)';
+            cursor.style.border = '1px solid rgba(255, 255, 255, 0.3)';
         });
         item.addEventListener('mouseleave', () => {
             if (!cursor) return;
@@ -385,231 +385,7 @@ document.addEventListener('keydown', (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. AI VIRAL SCRIPT & HOOK GENERATOR ---
-    let selectedNiche = 'restaurants';
-
-    const nicheChips = document.querySelectorAll('.niche-chip');
-    nicheChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            nicheChips.forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-            selectedNiche = chip.getAttribute('data-niche');
-        });
-    });
-
-    const generateScriptBtn = document.getElementById('generate-script-btn');
-    const scriptOutputContainer = document.getElementById('script-output-container');
-    const scriptResultContent = document.getElementById('script-result-content');
-    const copyScriptBtn = document.getElementById('copy-script-btn');
-    const whatsappScriptBtn = document.getElementById('whatsapp-script-btn');
-
-    const scriptTemplates = {
-        restaurants: {
-            viral: {
-                hook: "🔥 'لو لسه ما جربتش الطعم ده.. يبقى فاوتك نص عمرك في الأكل!'",
-                shots: [
-                    "00:00 - 00:03 🎬 [افتتاحية خاطفة]: زوم سريع جداً (Speed Ramp) على الدخان المتصاعد مع صوت قرمشة عالي.",
-                    "00:03 - 00:10 🎥 [استعراض الوجبة]: لقطة سينمائية بطيئة للمكونات وتناغم الألوان الذكي.",
-                    "00:10 - 00:15 ⚡ [دعوة للتجربة]: كابشن عريض باللون الأصفر والأبيض 'اطلب الآن واكتشف السر!'"
-                ],
-                caption: "💬 'أول قرمشة هتغير مفهومك عن الأكل الفاخر! 🍔🔥 #مطاعم #أكل_سينمائي #ريلز'",
-                prompt: "🤖 AI Prompt: Ultra-realistic cinematic food b-roll, mouth-watering lighting, slow-motion steam, 8k resolution."
-            },
-            cinematic: {
-                hook: "🎬 'هنا لا نقدم مجرد طعام.. بل نسرد قصة عشق لكل تفصيلة.'",
-                shots: [
-                    "00:00 - 00:05 🎥 [لقطة سينمائية فاخرة]: إضاءة درامية خافتة مع حركة كاميرا سريعة ودقيقة.",
-                    "00:05 - 00:15 🍷 [تفاصيل التقديم]: إبراز جودة المكونات واللمسات الفنية للشيف.",
-                    "00:15 - 00:30 ✨ [الختام]: شعار المكان بخلفية سينمائية راقية."
-                ],
-                caption: "✨ 'تجربة استثنائية تأخذك إلى عالم آخر من الفخامة.'",
-                prompt: "🤖 AI Prompt: Moody cinematic restaurant interior, anamorphic lens flare, professional color grade."
-            }
-        },
-        clinics: {
-            viral: {
-                hook: "🩺 'الابتسامة اللي بتغير حياتك مش حلم.. دي أسهل مما تتخيل!'",
-                shots: [
-                    "00:00 - 00:03 ⚡ [قبل وبعد]: تحول خاطف للابتسامة مع إضاءة براقة وكابشن تفاعلي.",
-                    "00:03 - 00:12 👨‍⚕️ [حديث الطبيب]: لقطات سريعة ومريحة للأجهزة الحديثة مع تعليق صوتي واضح.",
-                    "00:12 - 00:20 🌟 [النتيجة النهائية]: ثقة العميل والابتسامة المشرقة."
-                ],
-                caption: "✨ 'احجز استشارتك الآن واستعد ابتسامتك المثالية!'",
-                prompt: "🤖 AI Prompt: Modern clean dental clinic, soft professional lighting, bright confident smile."
-            }
-        },
-        ecommerce: {
-            viral: {
-                hook: "🛒 'المنتج ده غير يومي تماماً.. ليه ما عرفتوش من زمان؟!'",
-                shots: [
-                    "00:00 - 00:03 💥 [المشكلة]: لقطة سريعة للعين والمعاناة اليومية.",
-                    "00:03 - 00:10 💡 [الحل الذكي]: فتح المنتج واستعراض طريقة الاستخدام المدهشة.",
-                    "00:10 - 00:15 🚀 [عرض خاص]: كابشن خصم 20% لفترة محدودة مع زر الشراء."
-                ],
-                caption: "🎁 'اطلبه الآن واحصل على الشحن المجاني اليوم فقط!'",
-                prompt: "🤖 AI Prompt: Studio product showcase, clean neon background, dynamic unboxing motion."
-            }
-        },
-        podcast: {
-            viral: {
-                hook: "🎙️ 'أكبر خطأ بيقع فيه 90% من الناس في بداية حياتهم...'",
-                shots: [
-                    "00:00 - 00:04 ⚡ [Hook عالي التوتر]: زوم سريع على الضيف أثناء نطق الجملة الخاطفة.",
-                    "00:04 - 00:15 💬 [الكابشنز الديناميكية]: ظهور الكلمات واحدة تلو الأخرى بألوان مشعة ومؤثرات صوتية.",
-                    "00:15 - 00:30 🎧 [رد الفعل]: لقطة رد فعل المذيع مع موسيقى خلفية حماسية."
-                ],
-                caption: "💡 'اسمع النصيحة دي وركّز فيها كويس جداً! 🎧'",
-                prompt: "🤖 AI Prompt: Studio podcast setup, dark moody background, dynamic captions overlay."
-            }
-        },
-        personal: {
-            viral: {
-                hook: "💼 'لو عاوز تكبر البزنس بتاعك في 2026.. الفيديو ده ليك!'",
-                shots: [
-                    "00:00 - 00:03 🚀 [انتباه]: لقطة خاطفة مع مؤشر صعود الأرباح أو النجاح.",
-                    "00:03 - 00:15 📈 [النقاط الثلاث الرئيسية]: استعراض سريع للحلول المبتكرة.",
-                    "00:15 - 00:30 🤝 [Call to action]: تواصل معنا الآن لبدء الاستشارة."
-                ],
-                caption: "🎯 'نجاح مشروعك يبدأ بقرار صح! تواصل معنا اليوم.'",
-                prompt: "🤖 AI Prompt: Professional modern office backdrop, crisp lighting, high engagement aesthetic."
-            }
-        }
-    };
-
-    if (generateScriptBtn && scriptResultContent) {
-        generateScriptBtn.addEventListener('click', () => {
-            const tone = document.getElementById('ai-tone-select').value;
-            const duration = document.getElementById('ai-duration-select').value;
-            const topic = document.getElementById('ai-topic-input').value.trim();
-
-            const categoryData = scriptTemplates[selectedNiche] || scriptTemplates.restaurants;
-            const template = categoryData[tone] || categoryData.viral;
-
-            let topicText = topic ? `📌 **فكرة المشروع الخاص:** "${topic}"` : '';
-
-            let fullHtml = `
-                ${topicText ? `<div class="script-section-block"><h5>${topicText}</h5></div>` : ''}
-                <div class="script-section-block">
-                    <h5>🔥 الخطاف الفيروسي الخاطف (Viral Hook):</h5>
-                    <p style="font-size: 1.15rem; font-weight: 700; color: #FFC107;">${template.hook}</p>
-                </div>
-                <div class="script-section-block">
-                    <h5>🎬 سيناريو المشاهد والكاميرا (Duration: ${duration}s):</h5>
-                    <ul style="list-style: none; padding: 0;">
-                        ${template.shots.map(s => `<li style="margin-bottom: 8px;"><i class="fa-solid fa-play" style="color: #00f2fe; margin-left: 8px;"></i> ${s}</li>`).join('')}
-                    </ul>
-                </div>
-                <div class="script-section-block">
-                    <h5>💬 الكابشن الموصى به للمنصات:</h5>
-                    <p>${template.caption}</p>
-                </div>
-                <div class="script-section-block" style="border-right-color: #00f2fe;">
-                    <h5>🤖 أمر الذكاء الاصطناعي للمؤثرات والصوت (AI Prompt):</h5>
-                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; font-size: 0.85rem; color: #00f2fe;">${template.prompt}</code>
-                </div>
-            `;
-
-            scriptResultContent.innerHTML = fullHtml;
-            scriptOutputContainer.style.display = 'block';
-            scriptOutputContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        });
-    }
-
-    // Copy script button
-    if (copyScriptBtn && scriptResultContent) {
-        copyScriptBtn.addEventListener('click', () => {
-            const textToCopy = scriptResultContent.innerText;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalHtml = copyScriptBtn.innerHTML;
-                copyScriptBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>تم النسخ بنجاح!</span>`;
-                setTimeout(() => { copyScriptBtn.innerHTML = originalHtml; }, 2000);
-            });
-        });
-    }
-
-    // Send via WhatsApp button
-    if (whatsappScriptBtn && scriptResultContent) {
-        whatsappScriptBtn.addEventListener('click', () => {
-            const text = `مرحباً محمد عماد، قمت بتوليد هذا السكربت من موقعك وأود البدء في مونتاجه فوراً:\n\n${scriptResultContent.innerText}`;
-            const url = `https://wa.me/201001376298?text=${encodeURIComponent(text)}`;
-            window.open(url, '_blank');
-        });
-    }
-
-
-
-    // --- 3. AI SMART COST CALCULATOR ---
-    const videoCountRange = document.getElementById('video-count-range');
-    const videoCountVal = document.getElementById('video-count-val');
-    const videoLenRange = document.getElementById('video-len-range');
-    const videoLenVal = document.getElementById('video-len-val');
-
-    const chkCaptions = document.getElementById('chk-captions');
-    const chkColor = document.getElementById('chk-color');
-    const chkAudio = document.getElementById('chk-audio');
-    const chkExpress = document.getElementById('chk-express');
-
-    const calcTotalPrice = document.getElementById('calc-total-price');
-    const calcDeliveryTime = document.getElementById('calc-delivery-time');
-    const calcWhatsappBtn = document.getElementById('calc-whatsapp-btn');
-
-    function calculatePrice() {
-        if (!videoCountRange || !videoLenRange || !calcTotalPrice) return;
-
-        const count = parseInt(videoCountRange.value);
-        const lenSeconds = parseInt(videoLenRange.value);
-
-        if (videoCountVal) videoCountVal.innerText = `${count} ${count === 1 ? 'فيديو' : 'فيديوهات'}`;
-        if (videoLenVal) videoLenVal.innerText = `${lenSeconds} ثانية`;
-
-        // Base rates calculation ($ per video)
-        let baseRatePerVideo = 15;
-        if (lenSeconds > 30 && lenSeconds <= 60) baseRatePerVideo = 25;
-        else if (lenSeconds > 60) baseRatePerVideo = 40;
-
-        let videoTotal = baseRatePerVideo * count;
-
-        // Add-ons
-        let addOnsTotal = 0;
-        if (chkCaptions && chkCaptions.checked) addOnsTotal += 5 * count;
-        if (chkColor && chkColor.checked) addOnsTotal += 5 * count;
-        if (chkAudio && chkAudio.checked) addOnsTotal += 5 * count;
-
-        let total = videoTotal + addOnsTotal;
-
-        // Express multiplier
-        if (chkExpress && chkExpress.checked) {
-            total = Math.round(total * 1.25);
-            if (calcDeliveryTime) calcDeliveryTime.innerText = "خلال 24 ساعة 🚀";
-        } else {
-            let days = count <= 3 ? "24-48 ساعة" : count <= 7 ? "3-4 أيام" : "5-7 أيام";
-            if (calcDeliveryTime) calcDeliveryTime.innerText = days;
-        }
-
-        // Bulk discount
-        if (count >= 5) {
-            total = Math.round(total * 0.85); // 15% bulk discount
-        }
-
-        calcTotalPrice.innerText = `$${total}`;
-
-        if (calcWhatsappBtn) {
-            const msg = `مرحباً محمد عماد، أود طلب هذا العرض للمونتاج:\n- عدد الفيديوهات: ${count}\n- مدة الفيديو: ${lenSeconds} ثانية\n- التكلفة التقديرية: $${total}\n- مدة التسليم المتوقعة: ${calcDeliveryTime ? calcDeliveryTime.innerText : ''}`;
-            calcWhatsappBtn.href = `https://wa.me/201001376298?text=${encodeURIComponent(msg)}`;
-        }
-    }
-
-    if (videoCountRange) videoCountRange.addEventListener('input', calculatePrice);
-    if (videoLenRange) videoLenRange.addEventListener('input', calculatePrice);
-    if (chkCaptions) chkCaptions.addEventListener('change', calculatePrice);
-    if (chkColor) chkColor.addEventListener('change', calculatePrice);
-    if (chkAudio) chkAudio.addEventListener('change', calculatePrice);
-    if (chkExpress) chkExpress.addEventListener('change', calculatePrice);
-
-    calculatePrice();
-
-
-    // --- 4. FLOATING AI ASSISTANT BOT WIDGET ---
+    // --- FLOATING EDITORIAL ASSISTANT BOT WIDGET ---
     const aiBotToggleBtn = document.getElementById('ai-bot-toggle-btn');
     const aiChatWindow = document.getElementById('ai-chat-window');
     const aiChatClose = document.getElementById('ai-chat-close');
@@ -644,13 +420,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const msg = userMsg.toLowerCase();
 
         if (msg.includes('سعر') || msg.includes('تكلفة') || msg.includes('أسعار') || msg.includes('بكام')) {
-            return "تبدأ أسعار المونتاج من **$15 للفيديو** (Reel/Short 30s) مع خصم خاص للمجموعات! يمكنك استخدام **حاسبة التكلفة الذكية** بالموقع لحساب التكلفة بدقة فوراً! 📊";
+            return "تبدأ باقات وأسعار المونتاج السينمائي من **$15 للفيديو** (Reel/Short 30s) مع باقات خاصة للمحتوى الشهري والشركات! تواصل مع محمد عماد مباشرة لتحديد عرض مخصص لمشروعك 📊";
         }
         if (msg.includes('خطوات') || msg.includes('كيف') || msg.includes('بدء') || msg.includes('تواصل')) {
-            return "خطوات بدء العمل بسيطة جداً: \n1️⃣ إرسال اللقطات المصورة لـ محمد عماد عبر الواتساب.\n2️⃣ تحديد الأسلوب والمؤثرات أو توليد السكربت عبر الموقع.\n3️⃣ البدء فوراً في المونتاج والتسليم خلال 24-48 ساعة! 🚀";
-        }
-        if (msg.includes('سكربت') || msg.includes('مولد') || msg.includes('فكره')) {
-            return "يمكنك استخدام قسم **'مولد السكربتات AI'** بالأعلى! اختر مجالك وسيقوم الذكاء الاصطناعي بتوليد سيناريو مشهدي وخطاف خاطف فوراً! 🪄";
+            return "خطوات بدء العمل بسيطة جداً: \n1️⃣ إرسال اللقطات المصورة وتفاصيل الفكرة عبر الواتساب.\n2️⃣ الاتفاق على الهوية والإيقاع الموسيقي والمؤثرات.\n3️⃣ البدء فوراً في المونتاج والتسليم خلال 24-48 ساعة! 🚀";
         }
         if (msg.includes('برامج') || msg.includes('تقنيات') || msg.includes('خبرة') || msg.includes('مونتاج')) {
             return "يعتمد محمد عماد على أقوى برامج المونتاج الاحترافي: **CapCut Pro**, **Adobe Premiere Pro**, **After Effects**, و **DaVinci Resolve** لتنفيذ مونتاج سينمائي عالي الجودة بلمسة بشرية احترافية! 💻✨";
